@@ -4,6 +4,7 @@
 
 #include "itemList.h"
 
+#define LISTDIR_PREFIX "listas/"
 #define TXT_NAME "lista.txt"
 #define BIN_NAME "lista.bin"
 
@@ -211,7 +212,14 @@ void registerMovement(Item* listHead, unsigned int itemID, Operacion op, unsigne
 void writeTxt(Item* listHead)
 {
 	FILE* fptr;
-	fptr = fopen(TXT_NAME, "w");
+	fptr = fopen(LISTDIR_PREFIX""TXT_NAME, "w");
+	if (fptr == NULL)
+	{
+		printf("Error al abrir el archivo %s\n", LISTDIR_PREFIX""TXT_NAME);
+		printf("Asegurese de crear el directorio listas/\n");
+		fclose(fptr);
+		return;
+	}
 	
 	Item* temp = listHead;
 	while(temp != NULL)
@@ -225,8 +233,15 @@ void writeTxt(Item* listHead)
 void writeBin(Item* listHead)
 {
 	FILE* fptr;
-	fptr = fopen(BIN_NAME, "wb");
-	
+	fptr = fopen(LISTDIR_PREFIX""BIN_NAME, "wb");
+	if (fptr == NULL)
+	{
+		printf("Error al abrir el archivo %s\n", LISTDIR_PREFIX""TXT_NAME);
+		printf("Asegurese de crear el directorio listas/\n");
+		fclose(fptr);
+		return;
+	}
+
 	Item* temp = listHead;
 	while(temp != NULL)
 	{
@@ -239,10 +254,10 @@ void writeBin(Item* listHead)
 void readAndPrintBin()
 {
 	FILE *fptr;
-	fptr = fopen(BIN_NAME, "rb");
+	fptr = fopen(LISTDIR_PREFIX""BIN_NAME, "rb");
 	if (fptr == NULL)
 	{
-		printf("Error al abrir el archivo %s\n", BIN_NAME);
+		printf("Error al abrir el archivo %s\n", LISTDIR_PREFIX""BIN_NAME);
 		return;
 	}
 
@@ -268,10 +283,10 @@ void readAndPrintBin()
 Item* readBin()
 {
 	FILE *fptr;
-	fptr = fopen(BIN_NAME, "rb");
+	fptr = fopen(LISTDIR_PREFIX""BIN_NAME, "rb");
 	if (fptr == NULL)
 	{
-		printf("Error al abrir el archivo %s\n", BIN_NAME);
+		printf("Error al abrir el archivo %s\n", LISTDIR_PREFIX""BIN_NAME);
 		fclose(fptr);
 		return NULL;
 	}
