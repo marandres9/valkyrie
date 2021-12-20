@@ -23,19 +23,24 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		}
 	);
 	populateStock();
+	// cargar items desde archivo .bin
 	mainListView->populateList(getHead());
 
-	createAndSet_atHead(&head, 100, "TestItem", 0, 100);
-	mainListView->addListItem(head);
-	createAndSet_atHead(&head, 110, "TestItem2", 10, 80);
-	mainListView->addListItem(head);
+	wxButton *newButton = new wxButton(mainPanel, wxID_ADD);
+	wxButton *movButton = new wxButton(mainPanel, wxID_ANY, "Movimiento");
+	wxButton *saveButton = new wxButton(mainPanel, wxID_SAVE);
 
-	auto *button = new wxButton(mainPanel, wxID_ANY, "test");
+	// sizer para los botones
+	wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+	buttonSizer->Add(newButton, 0, wxALL, 5);
+	buttonSizer->Add(movButton, 0, wxALL, 5);
+	buttonSizer->Add(saveButton, 0, wxALL, 5);
 
 	// sizer principal, agrega la lista y los botones
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(mainListView, 1, wxEXPAND);
-	mainSizer->Add(button, 0, wxALIGN_RIGHT);
+	mainSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
+	
 	// se ajusta el sizer al panel principal
 	mainPanel->SetSizerAndFit(mainSizer);
 }
