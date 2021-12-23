@@ -1,11 +1,15 @@
 PROGRAM=main
 
+SRC=src
+
+#  linked list class (C)
 ITEMLIST=itemList
 ITEMLISTSRC=stockControl
 
+# sorting functions implementation
 LISTSORTING=listSorting
+# AddItemDialog class (C++)
 ADDITEMDIALOG=AddItemDialog
-SRC=src
 
 OBJECTS=$(PROGRAM).o $(ITEMLIST).o $(LISTSORTING).o $(ADDITEMDIALOG).o
 
@@ -22,7 +26,7 @@ $(PROGRAM): $(OBJECTS)
 	gcc $(CFLAGS) -c $< -o $@
 	
 clean:
-	rm *.o $(PROGRAM)
+	rm *.o
 # $< = The name of the first prerequisite. 
 # $^ = The names of all the prerequisites,
 # $@ = The file name of the target of the rule.
