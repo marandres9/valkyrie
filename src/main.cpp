@@ -4,7 +4,7 @@ wxIMPLEMENT_APP(MainApp);
 
 bool MainApp::OnInit()
 {
-	MainFrame* frame = new MainFrame("Maaariaano", wxDefaultPosition, wxSize(800, 600));
+	MainFrame* frame = new MainFrame("Mariaano", wxDefaultPosition, wxSize(800, 600));
 	frame->Show();
 	return true;
 }
