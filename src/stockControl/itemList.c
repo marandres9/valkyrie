@@ -86,6 +86,7 @@ Item* createItem()
 {
 	Item* newItem = malloc(sizeof(Item));
 
+	newItem->status = NOT_SHOWN_ON_LIST;
 	newItem->next = NULL;
 
 	return newItem;
@@ -114,9 +115,8 @@ void createAndSet_atHead(Item** listHead, unsigned int newID, const char* newNam
 	Item* newItem = createItem();
 	setItem(newItem, newID, newName, newStock, newPrice);
 
-	newItem->next = *listHead;
 	// cambio de head
-	*listHead = newItem;
+	insert_atHead(listHead, newItem);
 }
 Item* createAndSet_after(Item** itemToInsertAfter, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
 {

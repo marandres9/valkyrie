@@ -3,6 +3,17 @@
 
 #define MAX_NAME_LENGTH 20
 
+typedef enum
+{
+	NOT_SHOWN_ON_LIST,
+	SHOWN_ON_LIST,
+} ShownOnList;
+typedef enum
+{
+	ENTRADA,
+	SALIDA,
+} Operacion;
+
 typedef struct item
 {
 	unsigned int id;
@@ -10,14 +21,12 @@ typedef struct item
 	unsigned int stock;
 	float price;
 
+	// bandera para saber si el item ya se encuentra mostrado en la lista cuando se crea un
+	// Item se setea a NOT_SHOWN. Su estado solo es modificado cuando se muestra en la lista.
+	ShownOnList status;
+
 	struct item* next;
 } Item;
-
-typedef enum op
-{
-	ENTRADA,
-	SALIDA,
-} Operacion;
 
 unsigned int getID(Item* item);
 const char* getName(Item* item);
