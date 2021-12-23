@@ -3,6 +3,9 @@
 
 #include <wx/wx.h>
 #include <wx/listctrl.h>
+#include <wx/textctrl.h>
+
+#include "mainList.hpp"
 
 extern "C" {
 	#include "stockControl/itemList.h"
@@ -14,42 +17,66 @@ public:
 	bool OnInit();
 };
 
-class MainList : public wxListView
+class AddItemDialog : public wxDialog
 {
 public:
-	MainList(wxWindow *parent,
-			wxWindowID winid = wxID_ANY,
-			const wxPoint& pos = wxDefaultPosition,
-			const wxSize& size = wxDefaultSize,
-			long style = wxLC_REPORT
-			)
-		: wxListView(parent, winid, pos, size, style)
+	AddItemDialog(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize)
+		: wxDialog(parent, id, "Add Item", pos, size)
 	{
-		this->AppendColumn("ID", wxLIST_FORMAT_CENTER, 100);
-		this->AppendColumn("Name", wxLIST_FORMAT_CENTER, 500);
-		this->AppendColumn("Stock", wxLIST_FORMAT_CENTER, 100);
-		this->AppendColumn("Price", wxLIST_FORMAT_CENTER, 100);
+		wxGridSizer *listSizer = new wxGridSizer(4, wxSize(1,1));
+		// create textboxes and add them to listSizer
+		wxTextCtrl *idBox = new wxTextCtrl(this, wxID_ANY, "ID", wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+		wxTextCtrl *nameBox = new wxTextCtrl(this, wxID_ANY, "Name", wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+		wxTextCtrl *stockBox = new wxTextCtrl(this, wxID_ANY, "Stock", wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+		wxTextCtrl *priceBox = new wxTextCtrl(this, wxID_ANY, "Price", wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+		listSizer->Add(idBox, 1, wxEXPAND);
+		listSizer->Add(nameBox, 1, wxEXPAND);
+		listSizer->Add(stockBox, 1, wxEXPAND);
+		listSizer->Add(priceBox, 1, wxEXPAND);
+		idEntry = new wxTextCtrl(this, wxID_ANY);
+		nameEntry = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
+		stockEntry = new wxTextCtrl(this, wxID_ANY);
+		priceEntry = new wxTextCtrl(this, wxID_ANY);
+		// seteo el largo maximo para la celda del nombre
+		nameEntry->SetMaxLength(MAX_NAME_LENGTH);
+		listSizer->Add(idEntry, 1, wxEXPAND);
+		listSizer->Add(nameEntry, 1, wxEXPAND);
+		listSizer->Add(stockEntry, 1, wxEXPAND);
+		listSizer->Add(priceEntry, 1, wxEXPAND);
+
+		// crea los botones del cuadro de dialogo
+		wxSizer *buttonSizer = this->CreateButtonSizer(wxCLOSE | wxAPPLY);
+
+		// crea un sizer principal y agrega el sizer de las celdas y el de los botones
+		wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+		mainSizer->Add(listSizer, 1, wxEXPAND | wxALL, 5);
+		mainSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 5);
+		this->SetSizerAndFit(mainSizer);
 	}
 
-	void addListItem (Item *item)
-	{
-		int index = this->GetItemCount();
-	
-		this->InsertItem(index, std::to_string(item->id));
-		this->SetItem(index, 1, item->name);
-		this->SetItem(index, 2, std::to_string(item->stock));
-		this->SetItem(index, 3, std::to_string(item->price));
+	unsigned int getID() const {
+		unsigned int id;
 
-		this->SetItemData(index, (wxIntPtr) item);
+		sscanf(idEntry->GetLineText(0), "%u", &id);
+
+		return id;
 	}
-	void populateList(Item* listHead)
+	Item* onOkButton() 
 	{
-		while(listHead != NULL)
-		{
-			addListItem(listHead);
-			listHead = listHead->next;
-		}
+		Item* item = createItem();
+
+		unsigned int id = getID();
+
+		setItem(item, id, "test", 1, 1);		
+
+		return item;
 	}
+
+private:
+	wxTextCtrl *idEntry;
+	wxTextCtrl *nameEntry;
+	wxTextCtrl *stockEntry;
+	wxTextCtrl *priceEntry;
 };
 
 class MainFrame : public wxFrame
@@ -57,14 +84,19 @@ class MainFrame : public wxFrame
 public:
 	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 
-	Item* getHead();
-private:
-	MainList *mainListView;
-
-	Item* head;
+	// list controls
+	Item* getHead() const;
 	void populateStock();
+	void addListItem (Item *item);
+	void populateList(Item* listHead);
+	
+private:
+	// declaracion de los miembros
+	MainList *mainListView;
+	AddItemDialog *addItemDialog;	
+	Item* head;
 
-
+	// sorting
 	void sortByColumn(int col);
 	static int compareValues(unsigned int u1, unsigned int u2, int uirection);
 	static int compareValues(float f1, float f2, int direction);
@@ -73,6 +105,10 @@ private:
 	static int priceSortCallback(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction);
 	int sortDirection = 1;
 
+	// evt handlers
+	void onAddItemButton(wxCommandEvent &evt);
+
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

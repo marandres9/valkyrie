@@ -16,7 +16,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxPanel *mainPanel = new wxPanel(this);
 	
 	// crea la lista y la conecta al evento de click en una columna
-	mainListView = new MainList(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	mainListView = new MainList(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);
 	mainListView->Bind(wxEVT_LIST_COL_CLICK, 
 		[this](wxListEvent &evt) {
 			this->sortByColumn(evt.GetColumn());
@@ -24,7 +24,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	);
 	populateStock();
 	// cargar items desde archivo .bin
-	mainListView->populateList(getHead());
+	populateList(getHead());
 
 	wxButton *newButton = new wxButton(mainPanel, wxID_ADD);
 	wxButton *movButton = new wxButton(mainPanel, wxID_ANY, "Movimiento");
@@ -42,10 +42,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	mainSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
 	
 	// se ajusta el sizer al panel principal
+	mainPanel->SetBackgroundColour(wxColour("Cyan"));
 	mainPanel->SetSizerAndFit(mainSizer);
 }
 
-Item* MainFrame::getHead()
+Item* MainFrame::getHead() const
 {
 	return head;
 }
@@ -53,49 +54,54 @@ void MainFrame::populateStock()
 {
 	head = readBin();
 }
+void MainFrame::addListItem (Item *item)
+{
+	// agrega el item a la lista y modifica la bandera status para que no se vuelva a agregar
 
-// SORTING
-void MainFrame::sortByColumn(int col)
+	int index = mainListView->GetItemCount();
+
+	mainListView->InsertItem(index, std::to_string(item->id));
+	mainListView->SetItem(index, 1, item->name);
+	mainListView->SetItem(index, 2, std::to_string(item->stock));
+	mainListView->SetItem(index, 3, std::to_string(item->price));
+
+	mainListView->SetItemData(index, (wxIntPtr) item);
+
+	item->status = SHOWN_ON_LIST;
+}
+void MainFrame::populateList(Item* listHead)
 {
-// la funcion recibe la columna clickeada y llama a la funcion que corresponda
-	switch (col)
+	// solo agrega a la lista items que no hayan sido linkeados previamente
+	while(listHead != NULL)
 	{
-	case 0:
-		mainListView->SortItems(IDSortCallBack, this->sortDirection);
-		break;
-	case 2:
-		mainListView->SortItems(stockSortCallBack, this->sortDirection);
-		break;
-	case 3:
-		mainListView->SortItems(priceSortCallback, this->sortDirection);
-		break;
-	default:
-		return;
+		if (listHead->status == NOT_SHOWN_ON_LIST) {
+			addListItem(listHead);
+
+			listHead = listHead->next;
+		}
+		else {
+			listHead = listHead->next;
+		}
 	}
-// refresca la lista e invierte la direccion en la que se van a ordenar los items la proxima vez
-	mainListView->Refresh();
-	this->sortDirection = -this->sortDirection;
 }
-// funciones sobrecargadas que comparan los valores en las celdas de cada columna
-int MainFrame::compareValues(unsigned int u1, unsigned int u2, int direction)
+
+void MainFrame::onAddItemButton(wxCommandEvent &evt)
 {
-	return (u1 == u2) ? 0 : ((u1 < u2) ? -direction : direction);
+	addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
+	addItemDialog->Bind(wxEVT_BUTTON, 
+		[this](wxCommandEvent &evt) {
+			this->addListItem(addItemDialog->onOkButton());
+		},
+		 wxID_APPLY);
+	// muestra el dialogo
+	addItemDialog->ShowModal();
+	
+	// limpia la memoria asignada al dialogo
+	addItemDialog->Destroy();
+	printf("dialog gone\n");
 }
-int MainFrame::compareValues(float f1, float f2, int direction)
-{
-	return (f1 == f2) ? 0 : ((f1 < f2) ? -direction : direction);
-}
-// estas funciones intermedias pasan el valor devuelto por las funcinoes de comparacion
-// a la funcion SortItems(), la cual se encarga de ordenar los items
-int MainFrame::IDSortCallBack(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction)
-{
-	return compareValues(((Item*) item1)->id, ((Item*) item2)->id, (int) direction);
-}
-int MainFrame::stockSortCallBack(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction)
-{
-	return compareValues(((Item*) item1)->stock, ((Item*) item2)->stock, (int) direction);
-}
-int MainFrame::priceSortCallback(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction)
-{
-	return compareValues(((Item*) item1)->price, ((Item*) item2)->price, (int) direction);
-}
+
+
+wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
+	EVT_BUTTON(wxID_ADD, MainFrame::onAddItemButton)
+wxEND_EVENT_TABLE()
