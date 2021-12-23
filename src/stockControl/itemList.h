@@ -1,10 +1,12 @@
 #ifndef ITEMLIST_H
 #define ITEMLIST_H
 
+#define MAX_NAME_LENGTH 20
+
 typedef struct item
 {
 	unsigned int id;
-	char name[20];
+	char name[MAX_NAME_LENGTH];
 	unsigned int stock;
 	float price;
 
