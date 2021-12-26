@@ -1,6 +1,6 @@
 #include "StockMovementPanel.hpp"
 
-StockMovementPanel::StockMovementPanel(wxWindow *parent, wxWindowID winid = wxID_ANY, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize)
+StockMovementPanel::StockMovementPanel(wxWindow *parent, wxWindowID winid, const wxPoint &pos, const wxSize &size)
     : wxPanel(parent, winid, pos, size)
 {
     wxGridSizer *listSizer = new wxGridSizer(2, wxSize(1,1));

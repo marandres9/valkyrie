@@ -8,7 +8,7 @@
 class StockMovementPanel : public wxPanel
 {
 public:
-    StockMovementPanel(wxWindow *parent, wxWindowID winid, const wxPoint &pos, const wxSize &size);
+    StockMovementPanel(wxWindow *parent, wxWindowID winid = wxID_ANY, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
 
     unsigned int getID() const;
     int getMovement() const;
