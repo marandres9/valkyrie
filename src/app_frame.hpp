@@ -6,6 +6,7 @@
 #include <wx/textctrl.h>
 
 #include "MainList.hpp"
+#include "StockMovementPanel.hpp"
 #include "AddItemDialog.hpp"
 
 extern "C" {
@@ -21,7 +22,9 @@ public:
 class MainFrame : public wxFrame
 {
 public:
-	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+	MainFrame(wxWindowID id, const wxString& title,
+			const wxPoint& pos = wxDefaultPosition,
+			const wxSize& size = wxDefaultSize);
 
 	// list controls
 	Item* getHead() const;
@@ -35,6 +38,8 @@ private:
 	AddItemDialog *addItemDialog;	
 	Item* head;
 
+	StockMovementPanel *stockMovementPanel;
+
 	// sorting
 	void sortByColumn(int col);
 	static int compareValues(unsigned int u1, unsigned int u2, int uirection);
@@ -46,6 +51,8 @@ private:
 
 	// evt handlers
 	void onAddItemButton(wxCommandEvent &evt);
+	void onApplyMovementButton(wxCommandEvent &evt);
+	void onClose(wxCloseEvent &evt);
 
 	wxDECLARE_EVENT_TABLE();
 };
