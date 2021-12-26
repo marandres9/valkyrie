@@ -29,14 +29,16 @@ public:
 
     unsigned int getID() const
     {
-        unsigned int id;
-        sscanf(idEntry->GetLineText(0), "%u", &id);
+        // convierte wxString a int y checkea que no sea negativo
+        unsigned int id = wxAtoi(idEntry->GetLineText(0));
+        if(id < 0) return 0;
+
         return id;
     }
     int getMovement() const
     {
-        int movement;
-        sscanf(movementEntry->GetLineText(0), "%d", &movement);
+        // convierte wxString a int
+        int movement = wxAtoi(movementEntry->GetLineText(0));;
         return movement;
     }
 private:

@@ -5,7 +5,7 @@ wxIMPLEMENT_APP(MainApp);
 bool MainApp::OnInit()
 {
 	wxWindowID mainFrameID = wxWindow::NewControlId();
-	MainFrame* frame = new MainFrame(mainFrameID, "Maaariaano", wxDefaultPosition, wxSize(800, 600));
+	MainFrame* frame = new MainFrame(mainFrameID, "Maaaariaano", wxDefaultPosition, wxSize(800, 600));
 	frame->Show();
 	return true;
 }
@@ -31,12 +31,10 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 
 	wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
 	wxButton *newButton = new wxButton(buttonPanel, wxID_ADD);
-	wxButton *movButton = new wxButton(buttonPanel, wxID_ANY, "Movimiento");
 	wxButton *saveButton = new wxButton(buttonPanel, wxID_SAVE);
 	// sizer para los botones
 	wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 	buttonSizer->Add(newButton, 0, wxALL, 5);
-	buttonSizer->Add(movButton, 0, wxALL, 5);
 	buttonSizer->Add(saveButton, 0, wxALL, 5);
 	buttonPanel->SetSizerAndFit(buttonSizer);
 
@@ -72,7 +70,8 @@ void MainFrame::addListItem (Item *item)
 	mainListView->SetItem(index, 2, std::to_string(item->stock));
 	mainListView->SetItem(index, 3, std::to_string(item->price));
 
-	mainListView->SetItemData(index, (wxIntPtr) item);
+	// el puntero al item se pasa como metadata para el item de la lista en la gui
+	mainListView->SetItemPtrData(index, (wxUIntPtr) item);
 }
 void MainFrame::populateList(Item* listHead)
 {
@@ -104,12 +103,12 @@ void MainFrame::onAddItemButton(wxCommandEvent &evt)
 void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 {
 	// obtener los datos ingresados
-	uint id = stockMovementPanel->getID();
+	unsigned int id = stockMovementPanel->getID();
 	int movement = stockMovementPanel->getMovement();
+	// // encontrar el puntero del item asociado al ID ingresado.
+	// // si no se encuentra termina
+	Item* item = findItem(head, id);
 
-	// encontrar el puntero del item asociado al ID ingresado.
-	// si no se encuentra termina
-	Item* item = getItem(head, id);
 	if (item == NULL) {
 		printf("item not found\n(implement message)\n"); 
 		return;
