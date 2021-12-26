@@ -12,7 +12,7 @@ public:
 
     unsigned int getID() const;
     int getMovement() const;
-    void appendID(wxListEvent &evt);
+    void appendID(const wxString &id_str);
 
 private:
     wxTextCtrl *idEntry;

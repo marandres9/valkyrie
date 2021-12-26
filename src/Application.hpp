@@ -32,11 +32,19 @@ public:
 	void addListItem (Item *item);
 	void populateList(Item* listHead);
 	
+	void setSelectedItem(wxListEvent &evt);
+	void unsetSelectedItem(wxListEvent &evt);
+	const wxString &getSelectedItemID() const;
+	long getSelectedItemIndex() const;
+	wxString getSelectedItemName() const;
 private:
 	// declaracion de los miembros
 	MainList *mainListView;
 	AddItemDialog *addItemDialog;	
 	Item* head;
+
+	wxString selectedItemID;
+	long selectedItemIndex = 0;
 
 	StockMovementPanel *stockMovementPanel;
 
@@ -53,6 +61,7 @@ private:
 	void onAddItemButton(wxCommandEvent &evt);
 	void onApplyMovementButton(wxCommandEvent &evt);
 	void onSaveButton(wxCommandEvent &evt);
+	void onDeleteButton(wxCommandEvent &evt);
 	void onClose(wxCloseEvent &evt);
 
 	wxDECLARE_EVENT_TABLE();

@@ -38,8 +38,8 @@ int StockMovementPanel::getMovement() const
     int movement = wxAtoi(movementEntry->GetLineText(0));;
     return movement;
 }
-void StockMovementPanel::appendID(wxListEvent &evt)
+void StockMovementPanel::appendID(const wxString &id_str)
 {
     idEntry->Clear();
-    (*idEntry) << evt.GetText();
+    (*idEntry) << id_str;
 }

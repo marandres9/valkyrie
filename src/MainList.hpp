@@ -2,6 +2,7 @@
 #define MAINLIST_HPP
 
 #include <wx/listctrl.h>
+#include <iostream>
 
 class MainList : public wxListView
 {

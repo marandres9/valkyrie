@@ -5,7 +5,7 @@ wxIMPLEMENT_APP(MainApp);
 bool MainApp::OnInit()
 {
 	wxWindowID mainFrameID = wxWindow::NewControlId();
-	MainFrame* frame = new MainFrame(mainFrameID, "Maaaariaano", wxDefaultPosition, wxSize(800, 600));
+	MainFrame* frame = new MainFrame(mainFrameID, "Maaaaariaano", wxDefaultPosition, wxSize(800, 600));
 	frame->Show();
 	return true;
 }
@@ -15,6 +15,8 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 {	
 	// crea la lista y la conecta al evento de click en una columna
 	mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);
+	// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
+	Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::setSelectedItem, this);
 
 	// sizer para la lista principal
 	// wxBoxSizer *mainListViewSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -46,7 +48,6 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 
 	// panel para registrar los movimientos
 	stockMovementPanel = new StockMovementPanel(this);
-	Bind(wxEVT_LIST_ITEM_SELECTED, &StockMovementPanel::appendID, stockMovementPanel);
 
 	// sizer principal, agrega la lista y los botones
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -87,6 +88,25 @@ void MainFrame::populateList(Item* listHead)
 		addListItem(listHead);
 		listHead = listHead->next;
 	}
+}
+
+void MainFrame::setSelectedItem(wxListEvent &evt)
+{
+	selectedItemID = evt.GetText();
+	selectedItemIndex = evt.GetIndex();
+	stockMovementPanel->appendID(selectedItemID);
+}
+const wxString &MainFrame::getSelectedItemID() const
+{
+	return selectedItemID;
+}
+long MainFrame::getSelectedItemIndex() const 
+{
+	return selectedItemIndex;
+}
+wxString MainFrame::getSelectedItemName() const
+{
+	return mainListView->GetItemText(selectedItemIndex, 1);
 }
 
 void MainFrame::onAddItemButton(wxCommandEvent &evt)
@@ -157,6 +177,37 @@ void MainFrame::onSaveButton(wxCommandEvent &evt)
 
 	saveDialog->Destroy();
 }
+void MainFrame::onDeleteButton(wxCommandEvent &evt)
+{
+	wxDialog *deleteDialog = new wxDialog(this, wxID_ANY, "Delete item?", wxDefaultPosition, wxSize(700, 300));
+	deleteDialog->Bind(wxEVT_BUTTON, 
+						[this](wxCommandEvent &evt) {														
+							uint itemID = wxAtoi(this->getSelectedItemID());
+							deleteItem(&head, itemID);
+
+							mainListView->DeleteItem(this->getSelectedItemIndex());
+						},
+						wxID_YES);
+
+	wxSizer *buttonSizer = deleteDialog->CreateButtonSizer(wxYES | wxCANCEL);
+	
+	wxGridSizer *gridSizer = new wxGridSizer(2, wxSize(10, 10));
+
+	wxTextCtrl *idBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemID(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	wxTextCtrl *nameBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemName(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	
+	gridSizer->Add(idBox, 1, wxEXPAND);
+	gridSizer->Add(nameBox, 1, wxEXPAND);
+
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 5);
+	mainSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 5);
+
+	deleteDialog->SetSizerAndFit(mainSizer);
+
+	deleteDialog->ShowModal();
+	deleteDialog->Destroy();
+}
 void MainFrame::onClose(wxCloseEvent &evt)
 {
 	// al cerrar la ventana se borra la lista de la memoria
@@ -169,5 +220,6 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_BUTTON(wxID_ADD, MainFrame::onAddItemButton)
 	EVT_BUTTON(wxID_APPLY, MainFrame::onApplyMovementButton)
 	EVT_BUTTON(wxID_SAVE, MainFrame::onSaveButton)
+	EVT_BUTTON(wxID_DELETE, MainFrame::onDeleteButton)
 	EVT_CLOSE(MainFrame::onClose)
 wxEND_EVENT_TABLE()
