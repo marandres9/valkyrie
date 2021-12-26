@@ -49,7 +49,7 @@ Item* getItem(Item* listHead, unsigned int itemID)
 
 	while(temp->id != itemID)
 	{
-		if(temp == NULL) return NULL;
+		if(temp == NULL) break;
 		temp = temp->next;
 	}
 	return temp;
@@ -86,7 +86,6 @@ Item* createItem()
 {
 	Item* newItem = malloc(sizeof(Item));
 
-	newItem->status = NOT_SHOWN_ON_LIST;
 	newItem->next = NULL;
 
 	return newItem;
@@ -191,9 +190,14 @@ void changePrice(Item* listHead, unsigned int itemID, float newPrice)
 	setPrice(getItem(listHead, itemID), newPrice);
 }
 
-void registerMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad)
+Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad)
 {
 	Item* temp = getItem(listHead, itemID);
+	if (temp == NULL)
+	{
+		printf("ID %u not found.\n", itemID);
+		return temp;
+	}
 
 	switch (op)
 	{
@@ -205,8 +209,22 @@ void registerMovement(Item* listHead, unsigned int itemID, Operacion op, unsigne
 		break;	
 	default:
 		printf("Error al registrar la opearcion\n");
-		return;
+		return NULL;
 	}
+	return temp;
+}
+int registerMovement(Item* item, int movimiento)
+{
+	// el movimiento puede ser positivo(entrada) o negativo(salida)
+
+	if(item->stock < abs(movimiento) && movimiento < 0)
+	{
+		printf("Insufficient stock\n");
+		return 0;
+	}
+
+	item->stock += movimiento;
+	return 1;
 }
 
 void writeTxt(Item* listHead)

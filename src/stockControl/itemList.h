@@ -5,11 +5,6 @@
 
 typedef enum
 {
-	NOT_SHOWN_ON_LIST,
-	SHOWN_ON_LIST,
-} ShownOnList;
-typedef enum
-{
 	ENTRADA,
 	SALIDA,
 } Operacion;
@@ -20,10 +15,6 @@ typedef struct item
 	char name[MAX_NAME_LENGTH];
 	unsigned int stock;
 	float price;
-
-	// bandera para saber si el item ya se encuentra mostrado en la lista cuando se crea un
-	// Item se setea a NOT_SHOWN. Su estado solo es modificado cuando se muestra en la lista.
-	ShownOnList status;
 
 	struct item* next;
 } Item;
@@ -56,7 +47,9 @@ void changeID(Item* listHead, unsigned int oldID, unsigned int newID);
 void changeStock(Item* listHead, unsigned int key, unsigned int newStock);
 void changePrice(Item* listHead, unsigned int key, float newPrice);
 
-void registerMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad);
+Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad);
+// funcion adaptada para la gui
+int registerMovement(Item* item, int movimiento);
 
 void writeTxt(Item* listHead);
 void writeBin(Item* listHead);
