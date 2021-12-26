@@ -1,11 +1,11 @@
-#include "app_frame.hpp"
+#include "Application.hpp"
 
 wxIMPLEMENT_APP(MainApp);
 
 bool MainApp::OnInit()
 {
 	wxWindowID mainFrameID = wxWindow::NewControlId();
-	MainFrame* frame = new MainFrame(mainFrameID, "Maaaariaano", wxDefaultPosition, wxSize(800, 600));
+	MainFrame* frame = new MainFrame(mainFrameID, "Maaariaano", wxDefaultPosition, wxSize(800, 600));
 	frame->Show();
 	return true;
 }
@@ -30,22 +30,29 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	populateList(getHead());
 
 	wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
-	wxButton *newButton = new wxButton(buttonPanel, wxID_ADD);
+
+	wxButton *addButton = new wxButton(buttonPanel, wxID_ADD);
 	wxButton *saveButton = new wxButton(buttonPanel, wxID_SAVE);
+	wxButton *deleteButton = new wxButton(buttonPanel, wxID_DELETE);
+	
 	// sizer para los botones
 	wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
-	buttonSizer->Add(newButton, 0, wxALL, 5);
+	buttonSizer->Add(deleteButton, 0, wxALL, 5);
+	buttonSizer->AddStretchSpacer();
+	buttonSizer->Add(addButton, 0, wxALL, 5);
 	buttonSizer->Add(saveButton, 0, wxALL, 5);
+
 	buttonPanel->SetSizerAndFit(buttonSizer);
 
 	// panel para registrar los movimientos
 	stockMovementPanel = new StockMovementPanel(this);
+	Bind(wxEVT_LIST_ITEM_SELECTED, &StockMovementPanel::appendID, stockMovementPanel);
 
 	// sizer principal, agrega la lista y los botones
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(mainListView, 3, wxEXPAND);
 	mainSizer->Add(stockMovementPanel, 0, wxEXPAND);
-	mainSizer->Add(buttonPanel, 0, wxALIGN_RIGHT);
+	mainSizer->Add(buttonPanel, 0, wxEXPAND);
 	
 	// se ajusta el sizer al panel principal
 
