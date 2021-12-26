@@ -22,7 +22,7 @@ public:
 	unsigned int getStock() const;
 	float getPrice() const;
 	
-	Item* onOkButton();
+	Item* onApplyButton();
 
 private:
 	wxTextCtrl *idEntry;

@@ -60,7 +60,7 @@ float AddItemDialog::getPrice() const {
     return price;
 }
 
-Item* AddItemDialog::onOkButton() 
+Item* AddItemDialog::onApplyButton() 
 	{
 		Item* item = createItem();
 
