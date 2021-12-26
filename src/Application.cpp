@@ -180,11 +180,37 @@ void MainFrame::onSaveButton(wxCommandEvent &evt)
 }
 void MainFrame::onDeleteButton(wxCommandEvent &evt)
 {
+	// instancia un nuevo dialogo
 	wxDialog *deleteDialog = new wxDialog(this, wxID_ANY, "Delete item?", wxDefaultPosition, wxSize(700, 300));
+	// crea sizer para los botones
+	wxSizer *buttonSizer = deleteDialog->CreateButtonSizer(wxYES | wxCANCEL);
+	// crea sizer para cuadros de texto que mustran ID y nombre
+	wxGridSizer *gridSizer = new wxGridSizer(2, wxSize(10, 10));
+	// crea los cuadros de texto y los agrega a su sizer
+	wxTextCtrl *idBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemID(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	wxTextCtrl *nameBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemName(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	gridSizer->Add(idBox, 1, wxEXPAND);
+	gridSizer->Add(nameBox, 1, wxEXPAND);
+	// sizer principal, se ajusta al dialogo
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 5);
+	mainSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 5);
+	deleteDialog->SetSizerAndFit(mainSizer);
+	// conecta el evento del boton "Yes"
 	deleteDialog->Bind(wxEVT_BUTTON, 
-						[this, &deleteDialog](wxCommandEvent &evt) {														
+						[this, &deleteDialog, &idBox](wxCommandEvent &evt) {														
+							if(idBox->IsEmpty()) {
+								deleteDialog->Destroy(); 
+								printf("Item not found-invalid id\n (implement message)\n");
+								return;
+							}
+							
 							uint itemID = wxAtoi(this->getSelectedItemID());
-							if (findItem(head, itemID) == NULL) deleteDialog->Destroy();
+							if (findItem(head, itemID) == NULL) {
+								deleteDialog->Destroy();
+								printf("Item not found\n (implement message)\n");
+								return;
+							}
 
 							deleteItem(&head, itemID);
 
@@ -192,23 +218,7 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 							deleteDialog->Destroy();
 						},
 						wxID_YES);
-
-	wxSizer *buttonSizer = deleteDialog->CreateButtonSizer(wxYES | wxCANCEL);
-	
-	wxGridSizer *gridSizer = new wxGridSizer(2, wxSize(10, 10));
-
-	wxTextCtrl *idBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemID(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
-	wxTextCtrl *nameBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemName(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
-	
-	gridSizer->Add(idBox, 1, wxEXPAND);
-	gridSizer->Add(nameBox, 1, wxEXPAND);
-
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	mainSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 5);
-	mainSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 5);
-
-	deleteDialog->SetSizerAndFit(mainSizer);
-
+	// muestra el dialogo
 	deleteDialog->ShowModal();
 	deleteDialog->Destroy();
 }
