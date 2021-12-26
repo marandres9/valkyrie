@@ -2,5 +2,5 @@
 *.o
 *.txt
 *.bin
-main
+application
 listas
