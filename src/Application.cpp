@@ -181,11 +181,14 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 {
 	wxDialog *deleteDialog = new wxDialog(this, wxID_ANY, "Delete item?", wxDefaultPosition, wxSize(700, 300));
 	deleteDialog->Bind(wxEVT_BUTTON, 
-						[this](wxCommandEvent &evt) {														
+						[this, &deleteDialog](wxCommandEvent &evt) {														
 							uint itemID = wxAtoi(this->getSelectedItemID());
+							if (findItem(head, itemID) == NULL) deleteDialog->Destroy();
+
 							deleteItem(&head, itemID);
 
 							mainListView->DeleteItem(this->getSelectedItemIndex());
+							deleteDialog->Destroy();
 						},
 						wxID_YES);
 
