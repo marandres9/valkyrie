@@ -45,6 +45,8 @@ void setPrice(Item* item, float newPrice)
 
 Item* getItem(Item* listHead, unsigned int itemID)
 {
+	if(itemID == 0) return NULL;
+	
 	Item* temp = listHead;
 
 	while(temp->id != itemID)
