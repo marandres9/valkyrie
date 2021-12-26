@@ -43,22 +43,20 @@ void setPrice(Item* item, float newPrice)
 }
 
 
-Item* getItem(Item* listHead, unsigned int itemID)
-{
-	if(itemID == 0) return NULL;
-	
+Item* findItem(Item* listHead, unsigned int itemID)
+{	
 	Item* temp = listHead;
 
-	while(temp->id != itemID)
+	while(temp->id != itemID && temp != NULL)	
 	{
-		if(temp == NULL) break;
 		temp = temp->next;
+		if(temp == NULL) break;
 	}
 	return temp;
 }
 void printByID(Item* listHead, unsigned int itemID)
 {
-	Item* itemToPrint = getItem(listHead, itemID);
+	Item* itemToPrint = findItem(listHead, itemID);
 
 	if(itemToPrint != NULL)
 	{
@@ -177,24 +175,24 @@ void deleteList(Item** listHead)
 
 void changeName(Item* listHead, unsigned int itemID, const char* newName)
 {
-	setName(getItem(listHead, itemID), newName);
+	setName(findItem(listHead, itemID), newName);
 }
 void changeID(Item* listHead, unsigned int oldID, unsigned int newID)
 {
-	setID(getItem(listHead, oldID), newID);
+	setID(findItem(listHead, oldID), newID);
 }
 void changeStock(Item* listHead, unsigned int itemID, unsigned int newStock)
 {
-	setStock(getItem(listHead, itemID), newStock);
+	setStock(findItem(listHead, itemID), newStock);
 }
 void changePrice(Item* listHead, unsigned int itemID, float newPrice)
 {
-	setPrice(getItem(listHead, itemID), newPrice);
+	setPrice(findItem(listHead, itemID), newPrice);
 }
 
 Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad)
 {
-	Item* temp = getItem(listHead, itemID);
+	Item* temp = findItem(listHead, itemID);
 	if (temp == NULL)
 	{
 		printf("ID %u not found.\n", itemID);

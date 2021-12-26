@@ -29,7 +29,7 @@ void setName(Item* item, const char* newName);
 void setStock(Item* item, unsigned int newStock);
 void setPrice(Item* item, float newPrice);
 
-Item* getItem(Item* listHead, unsigned int itemID);
+Item* findItem(Item* listHead, unsigned int itemID);
 void printByID(Item* listHead, unsigned int itemID);
 void printByPtr(Item* item);
 void printAll(Item* listHead);
