@@ -1,4 +1,4 @@
-#include "app_frame.hpp"
+#include "Application.hpp"
 
 // SORTING
 void MainFrame::sortByColumn(int col)
