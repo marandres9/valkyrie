@@ -52,6 +52,7 @@ private:
 	// evt handlers
 	void onAddItemButton(wxCommandEvent &evt);
 	void onApplyMovementButton(wxCommandEvent &evt);
+	void onSaveButton(wxCommandEvent &evt);
 	void onClose(wxCloseEvent &evt);
 
 	wxDECLARE_EVENT_TABLE();

@@ -126,6 +126,30 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	// mostrar nuevamente el item modificado
 	this->addListItem(item);
 }
+void MainFrame::onSaveButton(wxCommandEvent &evt)
+{
+	wxDialog *saveDialog = new wxDialog(this, wxID_ANY, "Save...");
+
+	wxTextCtrl *message = new wxTextCtrl(saveDialog, wxID_ANY, "Save changes?", wxDefaultPosition, wxDefaultSize, wxTE_CENTER | wxTE_READONLY);
+
+	wxSizer *buttonSizer = saveDialog->CreateButtonSizer(wxCANCEL | wxYES);
+	saveDialog->Bind(wxEVT_BUTTON, 
+						[this, &saveDialog](wxCommandEvent &evt) {
+							writeBin(this->getHead());
+							writeTxt(this->getHead());
+							saveDialog->Destroy();
+						},
+						wxID_YES);
+
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer->Add(message, 1, wxEXPAND | wxALL, 10);
+	mainSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 5);
+	saveDialog->SetSizerAndFit(mainSizer);
+
+	saveDialog->ShowModal();
+
+	saveDialog->Destroy();
+}
 void MainFrame::onClose(wxCloseEvent &evt)
 {
 	// al cerrar la ventana se borra la lista de la memoria
@@ -137,5 +161,6 @@ void MainFrame::onClose(wxCloseEvent &evt)
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_BUTTON(wxID_ADD, MainFrame::onAddItemButton)
 	EVT_BUTTON(wxID_APPLY, MainFrame::onApplyMovementButton)
+	EVT_BUTTON(wxID_SAVE, MainFrame::onSaveButton)
 	EVT_CLOSE(MainFrame::onClose)
 wxEND_EVENT_TABLE()
