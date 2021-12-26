@@ -5,7 +5,7 @@ wxIMPLEMENT_APP(MainApp);
 bool MainApp::OnInit()
 {
 	wxWindowID mainFrameID = wxWindow::NewControlId();
-	MainFrame* frame = new MainFrame(mainFrameID, "Maaaaariaano", wxDefaultPosition, wxSize(800, 600));
+	MainFrame* frame = new MainFrame(mainFrameID, "Valkyrie", wxDefaultPosition, wxSize(800, 600));
 	frame->Show();
 	return true;
 }
@@ -152,6 +152,7 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	mainListView->DeleteItem(itemIndex);	
 	// mostrar nuevamente el item modificado
 	this->addListItem(item);
+	stockMovementPanel->clearMovementEntry();
 }
 void MainFrame::onSaveButton(wxCommandEvent &evt)
 {

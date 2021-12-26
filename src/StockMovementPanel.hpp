@@ -14,6 +14,7 @@ public:
     int getMovement() const;
     void appendID(const wxString &id_str);
 
+    void clearMovementEntry();
 private:
     wxTextCtrl *idEntry;
     wxTextCtrl *movementEntry;
