@@ -251,6 +251,7 @@ void writeTxt(Item* listHead)
 		temp = temp->next;
 	}
 
+	printf("File written succesfully: "LISTDIR_PREFIX TXT_NAME"\n");
 	fclose(fptr);
 }
 void writeBin(Item* listHead)
@@ -272,6 +273,7 @@ void writeBin(Item* listHead)
 		temp = temp->next;
 	}
 
+	printf("File written succesfully: "LISTDIR_PREFIX BIN_NAME"\n");
 	fclose (fptr);
 }
 void readAndPrintBin()

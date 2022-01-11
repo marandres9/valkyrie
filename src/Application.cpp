@@ -115,9 +115,12 @@ void MainFrame::onAddItemButton(wxCommandEvent &evt)
 	addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
 	addItemDialog->Bind(wxEVT_BUTTON, 
 						[this](wxCommandEvent &evt) {
-							newItemData = addItemDialog->onApplyButton();
+							ItemData newItemData = addItemDialog->onApplyButton();
 							Item* newItem = createAndSet_atHead(&head, newItemData.id, newItemData.name, newItemData.stock, newItemData.price);
 
+							// newItem es NULL si no se pudo crear el item (por id repetido)
+							if(newItem == NULL) return;
+							
 							this->addListItem(newItem);
 						},
 						wxID_APPLY);

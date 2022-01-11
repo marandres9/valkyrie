@@ -42,8 +42,6 @@ private:
 	AddItemDialog *addItemDialog;	
 	Item* head;
 
-	ItemData newItemData;
-
 	wxString selectedItemID;
 	long selectedItemIndex = 0;
 

@@ -12,7 +12,7 @@ extern "C" {
 typedef struct ItemData
 {
 	uint id;
-	const char* name;
+	char name[20];
 	uint stock;
 	float price;
 } ItemData;

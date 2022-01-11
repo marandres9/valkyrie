@@ -44,7 +44,6 @@ unsigned int AddItemDialog::getID() const {
     return id;
 }
 std::string AddItemDialog::getName() const {
-
     return nameEntry->GetLineText(0).ToStdString();
 }
 unsigned int AddItemDialog::getStock() const {
@@ -61,11 +60,11 @@ float AddItemDialog::getPrice() const {
 }
 
 ItemData AddItemDialog::onApplyButton() 
-	{
-        ItemData itemData = {.id = getID(),
-                            .name = getName().c_str(),
-                            .stock = getStock(),
-                            .price = getPrice()};
-        
-		return itemData;
-	}
+{
+    ItemData itemData = {.id = getID(),
+                        .stock = getStock(),
+                        .price = getPrice()};
+    strcpy(itemData.name, getName().c_str());
+    
+    return itemData;
+}
