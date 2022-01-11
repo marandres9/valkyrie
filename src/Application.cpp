@@ -212,7 +212,6 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 						[this, &deleteDialog](wxCommandEvent &evt) {	
 
 							uint itemID = wxAtoi(this->getSelectedItemID());
-							std::cout << itemID << std::endl;
 							if (findItem(head, itemID) == NULL) {
 								deleteDialog->Destroy();
 								printf("Item not found\n (implement message)\n");
