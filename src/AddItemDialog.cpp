@@ -60,16 +60,12 @@ float AddItemDialog::getPrice() const {
     return price;
 }
 
-Item* AddItemDialog::onApplyButton() 
+ItemData AddItemDialog::onApplyButton() 
 	{
-		Item* item = createItem();
-
-		unsigned int id = getID();
-		const char *name = getName().c_str();
-		unsigned int stock = getStock();
-		float price = getPrice();
-
-		setItem(item, id, name, stock, price);		
-
-		return item;
+        ItemData itemData = {.id = getID(),
+                            .name = getName().c_str(),
+                            .stock = getStock(),
+                            .price = getPrice()};
+        
+		return itemData;
 	}

@@ -115,8 +115,8 @@ void MainFrame::onAddItemButton(wxCommandEvent &evt)
 	addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
 	addItemDialog->Bind(wxEVT_BUTTON, 
 						[this](wxCommandEvent &evt) {
-							Item* newItem = addItemDialog->onApplyButton();
-							insert_atHead(&head, newItem);
+							newItemData = addItemDialog->onApplyButton();
+							Item* newItem = createAndSet_atHead(&head, newItemData.id, newItemData.name, newItemData.stock, newItemData.price);
 
 							this->addListItem(newItem);
 						},

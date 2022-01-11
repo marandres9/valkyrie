@@ -91,12 +91,21 @@ Item* createItem()
 	return newItem;
 }
 
-void setItem(Item* item, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
+int setItem(Item* listHead, Item* item, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
 {
-	setID(item, newID);
-	setName(item, newName);
-	setStock(item, newStock);
-	setPrice(item, newPrice);
+	if (findItem(listHead, newID) == NULL) 
+	{
+		setID(item, newID);
+		setName(item, newName);
+		setStock(item, newStock);
+		setPrice(item, newPrice);
+		return 1;
+	}
+	else
+	{
+		printf("ID %u already exists, use unique IDs\n", newID);
+		return 0;
+	}
 }
 
 Item* insert_atHead(Item** listHead, Item* item)
@@ -106,25 +115,21 @@ Item* insert_atHead(Item** listHead, Item* item)
 
 	return item;
 }
-void createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
+Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
 // Los arg se pasan por ref, tengo que cambiar la direc apuntada por head, entonces tengo que pasar un puntero 
 // al puntero de head. Cambio el valor de head desreferenciando una vez el puntero, accediendo a la direccion que
 // contiene el puntero que quiero modificar
 {
 	Item* newItem = createItem();
-	setItem(newItem, newID, newName, newStock, newPrice);
+	// si la funcion setItem devuelve 0, el ID ya existe y no se agrega el item a la lista
+	if (setItem(*listHead, newItem, newID, newName, newStock, newPrice) == 0)
+	{
+		free(newItem);
+		return NULL;
+	}
 
 	// cambio de head
 	insert_atHead(listHead, newItem);
-}
-Item* createAndSet_after(Item** itemToInsertAfter, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
-{
-	Item* newItem = createItem();
-	setItem(newItem, newID, newName, newStock, newPrice);
-
-	newItem->next = (*itemToInsertAfter)->next;
-
-	(*itemToInsertAfter)->next = newItem;
 
 	return newItem;
 }

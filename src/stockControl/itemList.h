@@ -35,10 +35,9 @@ void printByPtr(Item* item);
 void printAll(Item* listHead);
 
 Item* createItem();
-void setItem(Item* item, unsigned int newID, const char* newname, unsigned int newstock, float newprice);
+int setItem(Item* listHead, Item* item, unsigned int newID, const char* newname, unsigned int newstock, float newprice);
 Item* insert_atHead(Item** listHead, Item* item);
-void createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice);
-Item* createAndSet_after(Item** itemToInsertAfter, unsigned int newKey, const char* newName, unsigned int newStock, float newPrice);
+Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice);
 void deleteItem(Item** listHead, unsigned int itemID);
 void deleteList(Item** listHead);
 

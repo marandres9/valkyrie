@@ -9,6 +9,14 @@ extern "C" {
     #include "stockControl/itemList.h"
 }
 
+typedef struct ItemData
+{
+	uint id;
+	const char* name;
+	uint stock;
+	float price;
+} ItemData;
+
 class AddItemDialog : public wxDialog
 {
 public:
@@ -22,13 +30,14 @@ public:
 	unsigned int getStock() const;
 	float getPrice() const;
 	
-	Item* onApplyButton();
+	ItemData onApplyButton();
 
 private:
 	wxTextCtrl *idEntry;
 	wxTextCtrl *nameEntry;
 	wxTextCtrl *stockEntry;
 	wxTextCtrl *priceEntry;
+
 };
 
 #endif
