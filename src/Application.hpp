@@ -33,7 +33,6 @@ public:
 	void populateList(Item* listHead);
 	
 	void setSelectedItem(wxListEvent &evt);
-	void unsetSelectedItem(wxListEvent &evt);
 	const wxString &getSelectedItemID() const;
 	long getSelectedItemIndex() const;
 	wxString getSelectedItemName() const;

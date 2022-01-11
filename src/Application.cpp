@@ -17,6 +17,7 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);
 	// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
 	Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::setSelectedItem, this);
+	// Bind(wxEVT_LIST_ITEM_DESELECTED, &MainFrame::unsetSelectedItem, this);
 
 	// sizer para la lista principal
 	// wxBoxSizer *mainListViewSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -180,6 +181,12 @@ void MainFrame::onSaveButton(wxCommandEvent &evt)
 }
 void MainFrame::onDeleteButton(wxCommandEvent &evt)
 {
+	// checkear que el usuario haya selecionado un item
+	if(mainListView->GetSelectedItemCount() < 1)
+	{								
+		printf("no item selected\n (implement message)\n");
+		return;
+	}
 	// instancia un nuevo dialogo
 	wxDialog *deleteDialog = new wxDialog(this, wxID_ANY, "Delete item?", wxDefaultPosition, wxSize(700, 300));
 	// crea sizer para los botones
@@ -196,24 +203,21 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 	mainSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 5);
 	mainSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 5);
 	deleteDialog->SetSizerAndFit(mainSizer);
+	
 	// conecta el evento del boton "Yes"
 	deleteDialog->Bind(wxEVT_BUTTON, 
-						[this, &deleteDialog, &idBox](wxCommandEvent &evt) {														
-							if(idBox->IsEmpty()) {
-								deleteDialog->Destroy(); 
-								printf("Item not found-invalid id\n (implement message)\n");
-								return;
-							}
-							
+						[this, &deleteDialog](wxCommandEvent &evt) {	
+
 							uint itemID = wxAtoi(this->getSelectedItemID());
+							std::cout << itemID << std::endl;
 							if (findItem(head, itemID) == NULL) {
 								deleteDialog->Destroy();
 								printf("Item not found\n (implement message)\n");
 								return;
 							}
-
+							// delete item from linked list
 							deleteItem(&head, itemID);
-
+							// delete item from listctrl and close dialog
 							mainListView->DeleteItem(this->getSelectedItemIndex());
 							deleteDialog->Destroy();
 						},
