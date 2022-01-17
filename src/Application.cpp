@@ -13,6 +13,9 @@ bool MainApp::OnInit()
 MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size)
 	: wxFrame(nullptr, id, title, pos, size)
 {	
+	// crea el cuadro de error
+	// errorBox = new ErrorBox(this);
+	// -------------------------------
 	// crea la lista y la conecta al evento de click en una columna
 	this->mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);
 	// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
@@ -119,7 +122,10 @@ void MainFrame::onAddItemButton(wxCommandEvent &evt)
 							Item* newItem = createAndSet_atHead(&head, newItemData.id, newItemData.name, newItemData.stock, newItemData.price);
 
 							// newItem es NULL si no se pudo crear el item (por id repetido)
-							if(newItem == NULL) return;
+							if(newItem == NULL) {
+								ErrorBox::callError(ERR_REPEATED_ID);
+								return;
+							}
 							
 							this->addListItem(newItem);
 						},
@@ -141,12 +147,14 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	Item* item = findItem(head, id);
 
 	if (item == NULL) {
-		printf("item not found\n(implement message)\n"); 
+		ErrorBox::callError(ERR_NOT_FOUND);
+		printf("item not found\n"); 
 		return;
 	}
 	// registra el movimiento
 	if (registerMovement(item, movement) == 0) {
-		printf("error, insufficient stock\n(implement message)\n"); 
+		ErrorBox::callError(ERR_INSUFFICIENT_STOCK);
+		printf("error, insufficient stock\n"); 
 		return;
 	}
 
@@ -187,7 +195,8 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 	// checkear que el usuario haya selecionado un item
 	if(mainListView->GetSelectedItemCount() < 1)
 	{								
-		printf("no item selected\n (implement message)\n");
+		ErrorBox::callError(ERR_NOT_SELECTED);
+		printf("no item selected\n");
 		return;
 	}
 	// instancia un nuevo dialogo
@@ -213,8 +222,9 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 
 							uint itemID = wxAtoi(this->getSelectedItemID());
 							if (findItem(head, itemID) == NULL) {
+								ErrorBox::callError(ERR_NOT_FOUND);
+								printf("Item not found\n");
 								deleteDialog->Destroy();
-								printf("Item not found\n (implement message)\n");
 								return;
 							}
 							// delete item from linked list

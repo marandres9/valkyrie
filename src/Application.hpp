@@ -8,6 +8,7 @@
 #include "MainList.hpp"
 #include "StockMovementPanel.hpp"
 #include "AddItemDialog.hpp"
+#include "ErrorBox.hpp"
 
 extern "C" {
 	#include "stockControl/itemList.h"
@@ -46,6 +47,7 @@ private:
 	long selectedItemIndex = 0;
 
 	StockMovementPanel *stockMovementPanel;
+	// ErrorBox *errorBox;
 
 	// sorting
 	void sortByColumn(int col);
