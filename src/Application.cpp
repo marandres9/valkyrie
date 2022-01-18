@@ -17,11 +17,6 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	this->mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);
 	// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
 	Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::setSelectedItem, this);
-	// Bind(wxEVT_LIST_ITEM_DESELECTED, &MainFrame::unsetSelectedItem, this);
-
-	// sizer para la lista principal
-	// wxBoxSizer *mainListViewSizer = new wxBoxSizer(wxHORIZONTAL);
-	// mainListViewSizer->Add(mainListView, 1, wxEXPAND);
 	
 	mainListView->Bind(wxEVT_LIST_COL_CLICK, 
 		[this](wxListEvent &evt) {
