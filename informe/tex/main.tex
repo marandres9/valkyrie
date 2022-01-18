@@ -1,0 +1,50 @@
+% !TeX spellcheck = es_ES
+\documentclass[10pt, a4paper]{article}
+
+\usepackage{setspace} % linespacing (\doublespacing)
+\usepackage{graphicx} % images
+\graphicspath{./img}
+\usepackage[margin=1in]{geometry} % margins
+
+\usepackage{hyperref} % mailto:
+\usepackage{apacite}
+\bibliographystyle{apacite}
+
+\usepackage[spanish]{babel}
+
+\begin{document}
+\doublespacing
+%---Incluir portada
+\include{titlepage}
+
+\section*{Resumen}
+Este es el resumen.
+
+\subsubsection*{Palabras clave:}
+\section*{\emph{Abstract}}
+Abstract.
+\subsubsection*{Keywords:}
+
+\section{Introducción}
+El siguiente trabajo busca desarrollar una aplicación para el control de inventario de cualquier emprendimiento orientado a la venta de productos.
+\subsection*{Objetivos}
+\begin{itemize}
+	\item Implementar una estructura de datos que permita el almacenamiento en memoria del inventario y datos propios de cada elemento del inventario.
+	\item Crear una interfaz gráfica de usuario (GUI) que permita la visualización de cada uno de los elementos contenidos en la estructura de datos.
+	\item Permitir al usuario acceder y modificar cualquiera de elementos desde la GUI mediante botones y otros elementos gráficos.
+	\item Permitir el guardado de la estructura junto con todos sus datos, y su posterior lectura y re-utilización en otra instancia del programa.
+\end{itemize}
+\subsection*{Antecedentes}
+Existe una gran cantidad de opciones en cuanto a software de gestión empresarial, los cuales no hace mucho estaban orientados exclusivamente a grandes empresas, pero hoy en día, gracias al rápido avance de la tecnología, hasta los pequeños emprendimientos y Pymes pueden encontrar en este tipo de software muchos beneficios que facilitan la gestión de su empresa.
+El término \textit{software de gestión empresarial} es amplio y suele incluir varias funciones, tales como el control de inventario, producción y logística, sistemas para punto de venta (POS, por sus siglas en inglés), facturación u otros aspectos contables, y gestión de relación con clientes y proveedores. 
+
+Si bien existen empresas y organizaciones que se dedican a brindar algunos de los servicios mencionados anteriormente, tales como OPENPOS, etc, dichos servicios se suelen incluir dentro de lo que se conoce como sistemas de planificación de recursos empresariales (ERP, por sus siglas en inglés).
+Empresas tales como \textbf{Holded y Coliseo Software} incluyen la mayoría de estos servicios dentro de su paquete de software ERP \cite{wiki:erp}.
+\section{Desarrollo}
+\subsection*{Herramientas y software utilizados}
+\section{Resultados}
+\section{Conclusiones}
+\bibliography{./references}
+
+\end{document}
+
