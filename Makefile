@@ -1,6 +1,11 @@
+CC=gcc
+CCPP=g++
 SRC=src
 #  linked list class (C)
 ITEMLISTSRC=src/stockControl
+
+# path to: wx-config
+WX_CONFIG=${WXWIDGETS_WXCONFIG}
 
 CPP_SOURCES := $(wildcard $(SRC)/*.cpp)
 C_SOURCES := $(wildcard $(ITEMLISTSRC)/*.c)
@@ -14,13 +19,13 @@ CFLAGS=-Wall
 # 	echo $(DEPS)
 
 application: $(OBJECTS)
-	g++ $(CFLAGS) $(shell ${WXWIDGETS_WXCONFIG} --libs) $(OBJECTS) -o $@
+	$(CCPP) $(CFLAGS) $(shell $(WX_CONFIG) --libs) $(OBJECTS) -o $@
 
 %.o: $(SRC)/%.cpp
-	g++ $(CPPFLAGS) $(shell ${WXWIDGETS_WXCONFIG} --cppflags) -c $< -o $@
+	$(CCPP) $(CPPFLAGS) $(shell $(WX_CONFIG) --cppflags) -c $< -o $@
 
 %.o: $(ITEMLISTSRC)/%.c
-	gcc $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 	
 clean:
 	rm *.o
