@@ -49,15 +49,6 @@ private:
 	StockMovementPanel *stockMovementPanel;
 	// ErrorBox *errorBox;
 
-	// sorting
-	void sortByColumn(int col);
-	static int compareValues(unsigned int u1, unsigned int u2, int uirection);
-	static int compareValues(float f1, float f2, int direction);
-	static int IDSortCallBack(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction);
-	static int stockSortCallBack(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction);
-	static int priceSortCallback(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction);
-	int sortDirection = 1;
-
 	// evt handlers
 	void onAddItemButton(wxCommandEvent &evt);
 	void onApplyMovementButton(wxCommandEvent &evt);

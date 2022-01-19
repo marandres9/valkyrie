@@ -18,11 +18,7 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
 	Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::setSelectedItem, this);
 	
-	mainListView->Bind(wxEVT_LIST_COL_CLICK, 
-		[this](wxListEvent &evt) {
-			this->sortByColumn(evt.GetColumn());
-		}
-	);
+	
 	populateStock();
 	// cargar items desde archivo .bin
 	populateList(getHead());
