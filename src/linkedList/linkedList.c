@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "itemList.h"
+#include "linkedList.h"
 
 #define LISTDIR_PREFIX "listas/"
 #define TXT_NAME "lista.txt"
@@ -43,7 +43,7 @@ void setPrice(Item* item, float newPrice)
 }
 
 
-Item* _findItem(Item* listHead, unsigned int itemID)
+Item* find_item(Item* listHead, unsigned int itemID)
 {	
 	Item* temp = listHead;
 
@@ -56,7 +56,7 @@ Item* _findItem(Item* listHead, unsigned int itemID)
 }
 void printByID(Item* listHead, unsigned int itemID)
 {
-	Item* itemToPrint = _findItem(listHead, itemID);
+	Item* itemToPrint = find_item(listHead, itemID);
 
 	if(itemToPrint != NULL)
 	{
@@ -93,7 +93,7 @@ Item* createItem()
 
 int setItem(Item* listHead, Item* item, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
 {
-	if (_findItem(listHead, newID) == NULL) 
+	if (find_item(listHead, newID) == NULL) 
 	{
 		setID(item, newID);
 		setName(item, newName);
@@ -133,7 +133,7 @@ Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newNa
 
 	return newItem;
 }
-void deleteItem(Item** listHead, unsigned int itemID)
+void delete_item(Item** listHead, unsigned int itemID)
 {
 	Item* actual = *listHead;	// creo una variable que apunta a la direccion del head del programa principal
 	Item* previous;
@@ -161,7 +161,7 @@ void deleteItem(Item** listHead, unsigned int itemID)
 	free(actual);
 
 }
-void _deleteList(Item** listHead)
+void delete_list(Item** listHead)
 {
 	Item* nextItem = (*listHead)->next;
 
@@ -180,24 +180,24 @@ void _deleteList(Item** listHead)
 
 void changeName(Item* listHead, unsigned int itemID, const char* newName)
 {
-	setName(_findItem(listHead, itemID), newName);
+	setName(find_item(listHead, itemID), newName);
 }
 void changeID(Item* listHead, unsigned int oldID, unsigned int newID)
 {
-	setID(_findItem(listHead, oldID), newID);
+	setID(find_item(listHead, oldID), newID);
 }
 void changeStock(Item* listHead, unsigned int itemID, unsigned int newStock)
 {
-	setStock(_findItem(listHead, itemID), newStock);
+	setStock(find_item(listHead, itemID), newStock);
 }
 void changePrice(Item* listHead, unsigned int itemID, float newPrice)
 {
-	setPrice(_findItem(listHead, itemID), newPrice);
+	setPrice(find_item(listHead, itemID), newPrice);
 }
 
 Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad)
 {
-	Item* temp = _findItem(listHead, itemID);
+	Item* temp = find_item(listHead, itemID);
 	if (temp == NULL)
 	{
 		printf("ID %u not found.\n", itemID);
@@ -218,7 +218,7 @@ Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion 
 	}
 	return temp;
 }
-int registerMovement(Item* item, int movimiento)
+int register_movement(Item* item, int movimiento)
 {
 	// el movimiento puede ser positivo(entrada) o negativo(salida)
 
@@ -232,7 +232,7 @@ int registerMovement(Item* item, int movimiento)
 	return 1;
 }
 
-void writeTxt(Item* listHead)
+void write_txt(Item* listHead)
 {
 	FILE* fptr;
 	fptr = fopen(LISTDIR_PREFIX""TXT_NAME, "w");
@@ -254,7 +254,7 @@ void writeTxt(Item* listHead)
 	printf("File written succesfully: "LISTDIR_PREFIX TXT_NAME"\n");
 	fclose(fptr);
 }
-void writeBin(Item* listHead)
+void write_bin(Item* listHead)
 {
 	FILE* fptr;
 	fptr = fopen(LISTDIR_PREFIX""BIN_NAME, "wb");

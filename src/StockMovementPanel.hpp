@@ -16,7 +16,7 @@ public:
 
     void clearMovementEntry();
 private:
-    wxTextCtrl *idEntry;
+    static wxTextCtrl *idEntry;
     wxTextCtrl *movementEntry;
 };
 

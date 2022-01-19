@@ -5,9 +5,10 @@
 #include <wx/listctrl.h>
 
 #include "ErrorBox.hpp"
+#include "StockMovementPanel.hpp"
 
 extern "C" {
-	#include "stockControl/itemList.h"
+	#include "linkedList/linkedList.h"
 }
 
 class MainList : public wxListView
@@ -30,15 +31,30 @@ public:
 	void addNewItem(unsigned int newID, const char *newName, unsigned int newStock, float newPrice);
 	// adds to listView
 	void addListViewItem (Item *item);
-	// _findItem wrapper
+	// find_item() wrapper
 	Item* findItem(uint itemID);
-	// _writeBin & _writeTxt wrapper
+	// register_movement() wrapper
+	bool registerMovement(uint itemID, int movement);
+	// write_bin() & write_txt() wrapper
 	void saveList();
-	// deletes list from memory
+	// delete item from memory, delete_item() wrapper
+	void deleteItem();
+	// deletes list from memory, delete_list() wrapper
 	void freeList();
+
+	void setSelectedItem(wxListEvent &evt);
+	const wxString &getSelectedItemID() const;
+	long getSelectedItemIndex() const;
+	wxString getSelectedItemName() const;
+
 private:
 	// list head
 	Item* head;
+
+	wxString selectedItemID;
+	long selectedItemIndex = 0;
+
+	StockMovementPanel *stockMovementPanel;
 
 
 	// sorting

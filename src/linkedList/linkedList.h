@@ -29,7 +29,7 @@ void setName(Item* item, const char* newName);
 void setStock(Item* item, unsigned int newStock);
 void setPrice(Item* item, float newPrice);
 
-Item* _findItem(Item* listHead, unsigned int itemID);
+Item* find_item(Item* listHead, unsigned int itemID);
 void printByID(Item* listHead, unsigned int itemID);
 void printByPtr(Item* item);
 void printAll(Item* listHead);
@@ -38,8 +38,8 @@ Item* createItem();
 int setItem(Item* listHead, Item* item, unsigned int newID, const char* newname, unsigned int newstock, float newprice);
 Item* insert_atHead(Item** listHead, Item* item);
 Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice);
-void deleteItem(Item** listHead, unsigned int itemID);
-void _deleteList(Item** listHead);
+void delete_item(Item** listHead, unsigned int itemID);
+void delete_list(Item** listHead);
 
 void changeName(Item* listHead, unsigned int itemID, const char* newName);
 void changeID(Item* listHead, unsigned int oldID, unsigned int newID);
@@ -48,10 +48,10 @@ void changePrice(Item* listHead, unsigned int key, float newPrice);
 
 Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad);
 // funcion adaptada para la gui
-int registerMovement(Item* item, int movimiento);
+int register_movement(Item* item, int movimiento);
 
-void writeTxt(Item* listHead);
-void writeBin(Item* listHead);
+void write_txt(Item* listHead);
+void write_bin(Item* listHead);
 void readAndPrintBin();
 Item* readBin();
 

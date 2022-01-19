@@ -10,9 +10,9 @@
 #include "AddItemDialog.hpp"
 #include "ErrorBox.hpp"
 
-extern "C" {
-	#include "stockControl/itemList.h"
-}
+// extern "C" {
+// 	#include "linkedList/linkedList.h"
+// }
 
 class MainApp : public wxApp
 {
@@ -28,20 +28,19 @@ public:
 			const wxSize& size = wxDefaultSize);
 
 	
-	void setSelectedItem(wxListEvent &evt);
-	const wxString &getSelectedItemID() const;
-	long getSelectedItemIndex() const;
-	wxString getSelectedItemName() const;
+	// void setSelectedItem(wxListEvent &evt);
+	// const wxString &getSelectedItemID() const;
+	// long getSelectedItemIndex() const;
+	// wxString getSelectedItemName() const;
 private:
 	// declaracion de los miembros
 	MainList *mainListView;
 	AddItemDialog *addItemDialog;	
 
-	wxString selectedItemID;
-	long selectedItemIndex = 0;
+	// wxString selectedItemID;
+	// long selectedItemIndex = 0;
 
 	StockMovementPanel *stockMovementPanel;
-	// ErrorBox *errorBox;
 
 	// evt handlers
 	void onAddItemButton(wxCommandEvent &evt);

@@ -14,14 +14,11 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	: wxFrame(nullptr, id, title, pos, size)
 {	
 	// crea la lista y la conecta al evento de click en una columna
-	this->mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);
-	// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
-	Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::setSelectedItem, this);
+	this->mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);	
 	
-	
-	mainListView->populateStock();
+	mainListView->createListFromFile();
 	// cargar items desde archivo .bin
-	mainListView->populateList(getHead());
+	mainListView->populateListView();
 
 	wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
 
@@ -52,27 +49,6 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	this->SetSizerAndFit(mainSizer);
 }
 
-
-
-void MainFrame::setSelectedItem(wxListEvent &evt)
-{
-	selectedItemID = evt.GetText();
-	selectedItemIndex = evt.GetIndex();
-	stockMovementPanel->appendID(selectedItemID);
-}
-const wxString &MainFrame::getSelectedItemID() const
-{
-	return selectedItemID;
-}
-long MainFrame::getSelectedItemIndex() const 
-{
-	return selectedItemIndex;
-}
-wxString MainFrame::getSelectedItemName() const
-{
-	return mainListView->GetItemText(selectedItemIndex, 1);
-}
-
 void MainFrame::onAddItemButton(wxCommandEvent &evt)
 {
 	addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
@@ -94,29 +70,12 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	// obtener los datos ingresados
 	unsigned int id = stockMovementPanel->getID();
 	int movement = stockMovementPanel->getMovement();
-	// // encontrar el puntero del item asociado al ID ingresado.
-	// // si no se encuentra termina
-	Item* item = mainListView->findItem(id);
 
-	if (item == NULL) {
-		ErrorBox::callError(ERR_NOT_FOUND);
-		printf("item not found\n"); 
-		return;
+	// si el movimiento es valido, limpia el cuadro del movimiento
+	// si no es valido la funcion registerMovement() se encarga de dar el error
+	if(this->mainListView->registerMovement(id, movement)) {
+		stockMovementPanel->clearMovementEntry();
 	}
-	// registra y checkea el movimiento
-	if (registerMovement(item, movement) == 0) {
-		ErrorBox::callError(ERR_INSUFFICIENT_STOCK);
-		printf("error, insufficient stock\n"); 
-		return;
-	}
-
-	// luego busca el item en la lista y lo borra
-	// cada item en la GUI tiene metadata asociada a su puntero en la memoria del programa
-	long itemIndex = mainListView->FindItem(-1, (wxUIntPtr) item);
-	mainListView->DeleteItem(itemIndex);	
-	// mostrar nuevamente el item modificado
-	mainListView->addListViewItem(item);
-	stockMovementPanel->clearMovementEntry();
 }
 void MainFrame::onSaveButton(wxCommandEvent &evt)
 {
@@ -157,8 +116,8 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 	// crea sizer para cuadros de texto que mustran ID y nombre
 	wxGridSizer *gridSizer = new wxGridSizer(2, wxSize(10, 10));
 	// crea los cuadros de texto y los agrega a su sizer
-	wxTextCtrl *idBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemID(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
-	wxTextCtrl *nameBox = new wxTextCtrl(deleteDialog, wxID_ANY, getSelectedItemName(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	wxTextCtrl *idBox = new wxTextCtrl(deleteDialog, wxID_ANY, this->mainListView->getSelectedItemID(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	wxTextCtrl *nameBox = new wxTextCtrl(deleteDialog, wxID_ANY, this->mainListView->getSelectedItemName(), wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
 	gridSizer->Add(idBox, 1, wxEXPAND);
 	gridSizer->Add(nameBox, 1, wxEXPAND);
 	// sizer principal, se ajusta al dialogo
@@ -170,18 +129,9 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 	// conecta el evento del boton "Yes"
 	deleteDialog->Bind(wxEVT_BUTTON, 
 						[this, &deleteDialog](wxCommandEvent &evt) {	
-
-							uint itemID = wxAtoi(this->getSelectedItemID());
-							if (_findItem(head, itemID) == NULL) {
-								ErrorBox::callError(ERR_NOT_FOUND);
-								printf("Item not found\n");
-								deleteDialog->Destroy();
-								return;
-							}
-							// delete item from linked list
-							deleteItem(&head, itemID);
-							// delete item from listctrl and close dialog
-							mainListView->DeleteItem(this->getSelectedItemIndex());
+							// no need to pass an itemID since the listView keeps
+							// track of the selected item
+							this->mainListView->deleteItem();
 							deleteDialog->Destroy();
 						},
 						wxID_YES);

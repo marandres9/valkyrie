@@ -6,7 +6,7 @@
 #include <wx/sizer.h>
 
 extern "C" {
-    #include "stockControl/itemList.h"
+    #include "linkedList/linkedList.h"
 }
 
 typedef struct ItemData

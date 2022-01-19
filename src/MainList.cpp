@@ -18,6 +18,12 @@ MainList::MainList(wxWindow *parent,
 			this->sortByColumn(evt.GetColumn());
 		}
 	);
+
+    // al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
+    this->Bind(wxEVT_LIST_ITEM_SELECTED, &MainList::setSelectedItem, this);
+
+    // instancia de stockMovementPanel, no se muestra, es para actualizar el ID que muestra
+    stockMovementPanel = new StockMovementPanel(this, wxID_ANY);
 }
 
 Item* MainList::getHead() const
@@ -68,14 +74,75 @@ void MainList::populateListView()
 
 Item* MainList::findItem(uint itemID)
 {
-    return _findItem(this->head, itemID);
+    return find_item(this->head, itemID);
 }
 void MainList::saveList() 
 {
-    writeBin(this->head);
-    writeTxt(this->head);
+    write_bin(this->head);
+    write_txt(this->head);
 
 }
+void MainList::deleteItem() {
+    uint itemID = wxAtoi(getSelectedItemID());
+
+    // if item isn't found call error and return false
+    if (findItem(itemID) == NULL) {
+        ErrorBox::callError(ERR_NOT_FOUND);
+        printf("Item not found\n");
+        return;
+    }
+
+    // delete item from memory
+    delete_item(&(this->head), itemID);
+    // delete item from listView
+    this->DeleteItem(this->getSelectedItemIndex());
+}
 void MainList::freeList() {
-    _deleteList(&(this->head));
+    delete_list(&(this->head));
+}
+
+bool MainList::registerMovement(uint itemID, int movement)
+{
+	// encontrar el puntero del item asociado al ID ingresado.
+	// si no se encuentra termina
+    Item* item = this->findItem(itemID);
+
+    if (item == NULL) {
+		ErrorBox::callError(ERR_NOT_FOUND);
+		printf("item not found\n"); 
+		return false;
+	}
+	// registra y checkea el movimiento
+	if (register_movement(item, movement) == 0) {
+		ErrorBox::callError(ERR_INSUFFICIENT_STOCK);
+		printf("error, insufficient stock\n"); 
+		return false;
+	}
+	// luego busca el item en la lista y lo borra
+	// cada item en la GUI tiene metadata asociada a su puntero en la memoria del programa
+	long itemIndex = this->FindItem(-1, (wxUIntPtr) item);
+	this->DeleteItem(itemIndex);	
+	// mostrar nuevamente el item modificado
+	this->addListViewItem(item);
+
+    return true;
+}
+
+void MainList::setSelectedItem(wxListEvent &evt)
+{
+	selectedItemID = evt.GetText();
+	selectedItemIndex = evt.GetIndex();
+	stockMovementPanel->appendID(selectedItemID);
+}
+const wxString &MainList::getSelectedItemID() const
+{
+	return selectedItemID;
+}
+long MainList::getSelectedItemIndex() const 
+{
+	return selectedItemIndex;
+}
+wxString MainList::getSelectedItemName() const
+{
+	return this->GetItemText(selectedItemIndex, 1);
 }
