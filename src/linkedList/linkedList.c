@@ -45,6 +45,8 @@ void setPrice(Item* item, float newPrice)
 
 Item* find_item(Item* listHead, unsigned int itemID)
 {	
+	if(listHead == NULL) return NULL;
+	
 	Item* temp = listHead;
 
 	while(temp->id != itemID && temp != NULL)	
@@ -127,7 +129,6 @@ Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newNa
 		free(newItem);
 		return NULL;
 	}
-
 	// cambio de head
 	insert_atHead(listHead, newItem);
 

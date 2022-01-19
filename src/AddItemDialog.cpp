@@ -63,7 +63,8 @@ ItemData AddItemDialog::onApplyButton()
 {
     ItemData itemData = {.id = getID(),
                         .stock = getStock(),
-                        .price = getPrice()};
+                        .price = getPrice()
+                        };
     strcpy(itemData.name, getName().c_str());
     
     return itemData;

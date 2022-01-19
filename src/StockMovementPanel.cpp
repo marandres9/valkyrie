@@ -42,6 +42,7 @@ void StockMovementPanel::appendID(const wxString &id_str)
 {
     idEntry->Clear();
     (*idEntry) << id_str;
+    // (*idEntry) << "test";
 }
 
 void StockMovementPanel::clearMovementEntry()

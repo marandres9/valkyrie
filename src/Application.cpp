@@ -142,9 +142,21 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 void MainFrame::onClose(wxCloseEvent &evt)
 {
 	// al cerrar la ventana se borra la lista de la memoria
-	mainListView->freeList();
+	// first check if list isn't already empty
+	if(!mainListView->isEmpty()) {
+		mainListView->freeList();
+	}
 	// cierra la ventana
 	Destroy();
+}
+// al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
+void MainFrame::setSelectedItem(wxListEvent &evt)
+{
+	wxString itemID = evt.GetText();
+	long itemIndex = evt.GetIndex();
+	
+	this->mainListView->setSelectedItemData(itemID, itemIndex);
+	this->stockMovementPanel->appendID(itemID);
 }
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -153,4 +165,5 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_BUTTON(wxID_SAVE, MainFrame::onSaveButton)
 	EVT_BUTTON(wxID_DELETE, MainFrame::onDeleteButton)
 	EVT_CLOSE(MainFrame::onClose)
+	EVT_LIST_ITEM_SELECTED(wxID_ANY, MainFrame::setSelectedItem)
 wxEND_EVENT_TABLE()

@@ -1,4 +1,5 @@
 #include "MainList.hpp"
+#include <iostream>
 
 MainList::MainList(wxWindow *parent,
                     wxWindowID winid,
@@ -20,10 +21,7 @@ MainList::MainList(wxWindow *parent,
 	);
 
     // al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
-    this->Bind(wxEVT_LIST_ITEM_SELECTED, &MainList::setSelectedItem, this);
-
-    // instancia de stockMovementPanel, no se muestra, es para actualizar el ID que muestra
-    stockMovementPanel = new StockMovementPanel(this, wxID_ANY);
+    // this->Bind(wxEVT_LIST_ITEM_SELECTED, &MainList::setSelectedItem, this);
 }
 
 Item* MainList::getHead() const
@@ -42,6 +40,7 @@ void MainList::addNewItem(unsigned int newID, const char *newName, unsigned int 
     // newItem es NULL si no se pudo crear el item (por id repetido)
     if(newItem == NULL) {
         ErrorBox::callError(ERR_REPEATED_ID);
+        return;
     }
     // agrega newItem a la listView
     this->addListViewItem(newItem);
@@ -82,25 +81,6 @@ void MainList::saveList()
     write_txt(this->head);
 
 }
-void MainList::deleteItem() {
-    uint itemID = wxAtoi(getSelectedItemID());
-
-    // if item isn't found call error and return false
-    if (findItem(itemID) == NULL) {
-        ErrorBox::callError(ERR_NOT_FOUND);
-        printf("Item not found\n");
-        return;
-    }
-
-    // delete item from memory
-    delete_item(&(this->head), itemID);
-    // delete item from listView
-    this->DeleteItem(this->getSelectedItemIndex());
-}
-void MainList::freeList() {
-    delete_list(&(this->head));
-}
-
 bool MainList::registerMovement(uint itemID, int movement)
 {
 	// encontrar el puntero del item asociado al ID ingresado.
@@ -127,12 +107,34 @@ bool MainList::registerMovement(uint itemID, int movement)
 
     return true;
 }
+void MainList::deleteItem() {
+    uint itemID = wxAtoi(getSelectedItemID());
 
-void MainList::setSelectedItem(wxListEvent &evt)
+    // if item isn't found call error and return false
+    if (findItem(itemID) == NULL) {
+        ErrorBox::callError(ERR_NOT_FOUND);
+        printf("Item not found\n");
+        return;
+    }
+
+    // delete item from memory
+    delete_item(&(this->head), itemID);
+    // delete item from listView
+    this->DeleteItem(this->getSelectedItemIndex());
+}
+void MainList::freeList() {
+    delete_list(&(this->head));
+}
+
+bool MainList::isEmpty() const {
+    if(this->head == NULL) return true;
+    else return false;
+}
+
+void MainList::setSelectedItemData(wxString itemID, long itemIndex)
 {
-	selectedItemID = evt.GetText();
-	selectedItemIndex = evt.GetIndex();
-	stockMovementPanel->appendID(selectedItemID);
+	selectedItemID = itemID;
+	selectedItemIndex = itemIndex;
 }
 const wxString &MainList::getSelectedItemID() const
 {

@@ -42,7 +42,9 @@ public:
 	// deletes list from memory, delete_list() wrapper
 	void freeList();
 
-	void setSelectedItem(wxListEvent &evt);
+	bool isEmpty() const;
+
+	void setSelectedItemData(wxString itemID, long itemIndex);
 	const wxString &getSelectedItemID() const;
 	long getSelectedItemIndex() const;
 	wxString getSelectedItemName() const;

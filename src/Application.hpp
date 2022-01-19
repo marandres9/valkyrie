@@ -27,18 +27,11 @@ public:
 			const wxPoint& pos = wxDefaultPosition,
 			const wxSize& size = wxDefaultSize);
 
-	
-	// void setSelectedItem(wxListEvent &evt);
-	// const wxString &getSelectedItemID() const;
-	// long getSelectedItemIndex() const;
-	// wxString getSelectedItemName() const;
+	void setSelectedItem(wxListEvent &evt);
 private:
 	// declaracion de los miembros
 	MainList *mainListView;
 	AddItemDialog *addItemDialog;	
-
-	// wxString selectedItemID;
-	// long selectedItemIndex = 0;
 
 	StockMovementPanel *stockMovementPanel;
 
