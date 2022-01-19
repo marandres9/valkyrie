@@ -1,4 +1,0 @@
-105	Sweater	103	99.00
-104	Remeras	10	50.00
-103	Remeras	15	10.00
-102	Pantalones	9	3.99

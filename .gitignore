@@ -1,6 +1,6 @@
 .vscode/
 *.o
-# listas
-# *.txt
-# *.bin
+listas
+*.txt
+*.bin
 application

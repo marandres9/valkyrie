@@ -29,7 +29,7 @@ void setName(Item* item, const char* newName);
 void setStock(Item* item, unsigned int newStock);
 void setPrice(Item* item, float newPrice);
 
-Item* findItem(Item* listHead, unsigned int itemID);
+Item* _findItem(Item* listHead, unsigned int itemID);
 void printByID(Item* listHead, unsigned int itemID);
 void printByPtr(Item* item);
 void printAll(Item* listHead);
@@ -39,7 +39,7 @@ int setItem(Item* listHead, Item* item, unsigned int newID, const char* newname,
 Item* insert_atHead(Item** listHead, Item* item);
 Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice);
 void deleteItem(Item** listHead, unsigned int itemID);
-void deleteList(Item** listHead);
+void _deleteList(Item** listHead);
 
 void changeName(Item* listHead, unsigned int itemID, const char* newName);
 void changeID(Item* listHead, unsigned int oldID, unsigned int newID);

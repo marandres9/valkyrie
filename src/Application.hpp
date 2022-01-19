@@ -27,11 +27,6 @@ public:
 			const wxPoint& pos = wxDefaultPosition,
 			const wxSize& size = wxDefaultSize);
 
-	// list controls
-	Item* getHead() const;
-	void populateStock();
-	void addListItem (Item *item);
-	void populateList(Item* listHead);
 	
 	void setSelectedItem(wxListEvent &evt);
 	const wxString &getSelectedItemID() const;
@@ -41,7 +36,6 @@ private:
 	// declaracion de los miembros
 	MainList *mainListView;
 	AddItemDialog *addItemDialog;	
-	Item* head;
 
 	wxString selectedItemID;
 	long selectedItemIndex = 0;

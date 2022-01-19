@@ -19,9 +19,9 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::setSelectedItem, this);
 	
 	
-	populateStock();
+	mainListView->populateStock();
 	// cargar items desde archivo .bin
-	populateList(getHead());
+	mainListView->populateList(getHead());
 
 	wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
 
@@ -52,35 +52,7 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	this->SetSizerAndFit(mainSizer);
 }
 
-Item* MainFrame::getHead() const
-{
-	return head;
-}
-void MainFrame::populateStock()
-{
-	head = readBin();
-}
-void MainFrame::addListItem (Item *item)
-{
-	// agrega el item a la lista
-	int index = mainListView->GetItemCount();
 
-	mainListView->InsertItem(index, std::to_string(item->id));
-	mainListView->SetItem(index, 1, item->name);
-	mainListView->SetItem(index, 2, std::to_string(item->stock));
-	mainListView->SetItem(index, 3, std::to_string(item->price));
-
-	// el puntero al item se pasa como metadata para el item de la lista en la gui
-	mainListView->SetItemPtrData(index, (wxUIntPtr) item);
-}
-void MainFrame::populateList(Item* listHead)
-{
-	while(listHead != NULL)
-	{
-		addListItem(listHead);
-		listHead = listHead->next;
-	}
-}
 
 void MainFrame::setSelectedItem(wxListEvent &evt)
 {
@@ -106,22 +78,14 @@ void MainFrame::onAddItemButton(wxCommandEvent &evt)
 	addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
 	addItemDialog->Bind(wxEVT_BUTTON, 
 						[this](wxCommandEvent &evt) {
+							// obtiene los datos ingresados en el dialogo
 							ItemData newItemData = addItemDialog->onApplyButton();
-							Item* newItem = createAndSet_atHead(&head, newItemData.id, newItemData.name, newItemData.stock, newItemData.price);
-
-							// newItem es NULL si no se pudo crear el item (por id repetido)
-							if(newItem == NULL) {
-								ErrorBox::callError(ERR_REPEATED_ID);
-								return;
-							}
-							
-							this->addListItem(newItem);
+							// agrega el item a la LL y a la listView
+							this->mainListView->addNewItem(newItemData.id, newItemData.name, newItemData.stock, newItemData.price);
 						},
 						wxID_APPLY);
-
 	// muestra el dialogo
 	addItemDialog->ShowModal();
-	
 	// limpia la memoria asignada al dialogo
 	addItemDialog->Destroy();
 }
@@ -132,14 +96,14 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	int movement = stockMovementPanel->getMovement();
 	// // encontrar el puntero del item asociado al ID ingresado.
 	// // si no se encuentra termina
-	Item* item = findItem(head, id);
+	Item* item = mainListView->findItem(id);
 
 	if (item == NULL) {
 		ErrorBox::callError(ERR_NOT_FOUND);
 		printf("item not found\n"); 
 		return;
 	}
-	// registra el movimiento
+	// registra y checkea el movimiento
 	if (registerMovement(item, movement) == 0) {
 		ErrorBox::callError(ERR_INSUFFICIENT_STOCK);
 		printf("error, insufficient stock\n"); 
@@ -151,7 +115,7 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	long itemIndex = mainListView->FindItem(-1, (wxUIntPtr) item);
 	mainListView->DeleteItem(itemIndex);	
 	// mostrar nuevamente el item modificado
-	this->addListItem(item);
+	mainListView->addListViewItem(item);
 	stockMovementPanel->clearMovementEntry();
 }
 void MainFrame::onSaveButton(wxCommandEvent &evt)
@@ -163,8 +127,7 @@ void MainFrame::onSaveButton(wxCommandEvent &evt)
 	wxSizer *buttonSizer = saveDialog->CreateButtonSizer(wxCANCEL | wxYES);
 	saveDialog->Bind(wxEVT_BUTTON, 
 						[this, &saveDialog](wxCommandEvent &evt) {
-							writeBin(this->getHead());
-							writeTxt(this->getHead());
+							this->mainListView->saveList();
 							saveDialog->Destroy();
 						},
 						wxID_YES);
@@ -209,7 +172,7 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 						[this, &deleteDialog](wxCommandEvent &evt) {	
 
 							uint itemID = wxAtoi(this->getSelectedItemID());
-							if (findItem(head, itemID) == NULL) {
+							if (_findItem(head, itemID) == NULL) {
 								ErrorBox::callError(ERR_NOT_FOUND);
 								printf("Item not found\n");
 								deleteDialog->Destroy();
@@ -229,7 +192,7 @@ void MainFrame::onDeleteButton(wxCommandEvent &evt)
 void MainFrame::onClose(wxCloseEvent &evt)
 {
 	// al cerrar la ventana se borra la lista de la memoria
-	deleteList(&head);
+	mainListView->freeList();
 	// cierra la ventana
 	Destroy();
 }
