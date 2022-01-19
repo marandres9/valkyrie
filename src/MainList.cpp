@@ -19,9 +19,10 @@ MainList::MainList(wxWindow *parent,
 			this->sortByColumn(evt.GetColumn());
 		}
 	);
-
-    // al seleccionar un item en la gui guarda el id del item y lo pasa al panel de los movimientos 
-    // this->Bind(wxEVT_LIST_ITEM_SELECTED, &MainList::setSelectedItem, this);
+    // read lista.bin file contents, load list to memory
+    this->createListFromFile();
+    // copy list contents to listView
+    this->populateListView();
 }
 
 Item* MainList::getHead() const

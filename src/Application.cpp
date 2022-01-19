@@ -16,10 +16,6 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	// crea la lista y la conecta al evento de click en una columna
 	this->mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);	
 	
-	mainListView->createListFromFile();
-	// cargar items desde archivo .bin
-	mainListView->populateListView();
-
 	wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
 
 	wxButton *addButton = new wxButton(buttonPanel, wxID_ADD);
