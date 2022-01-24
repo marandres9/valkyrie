@@ -325,6 +325,9 @@ Item* readBin()
 	// averiguar cant de items escritos
 	fseek(fptr, 0, SEEK_END);
 	int size = ftell(fptr);
+	// si el archivo no contiene nada devuelve NULL
+	if(size == 0) return head;
+
 	int numItems = size / sizeof(Item);
 
 	for (int n = 1; n <= numItems; n++)
