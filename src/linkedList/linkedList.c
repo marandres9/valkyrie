@@ -118,9 +118,10 @@ Item* insert_atHead(Item** listHead, Item* item)
 	return item;
 }
 Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
-// Los arg se pasan por ref, tengo que cambiar la direc apuntada por head, entonces tengo que pasar un puntero 
-// al puntero de head. Cambio el valor de head desreferenciando una vez el puntero, accediendo a la direccion que
-// contiene el puntero que quiero modificar
+// Se toma un puntero que apunta a la cabeza de la lista (que es un puntero), ya que 
+// se necesita modificar la direccion a la que apunta la cabeza. 
+// Si el argumento fuera de tipo Item* listHead, la funcion recibiria una copia del 
+// puntero listHead, y no podria cambiar la direccion a la que apunta la cabeza real.
 {
 	Item* newItem = createItem();
 	// si la funcion setItem devuelve 0, el ID ya existe y no se agrega el item a la lista
@@ -129,10 +130,12 @@ Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newNa
 		free(newItem);
 		return NULL;
 	}
-	// cambio de head
-	insert_atHead(listHead, newItem);
-
-	return newItem;
+	else
+	{
+		// cambio de head
+		insert_atHead(listHead, newItem);
+		return newItem;
+	}
 }
 void delete_item(Item** listHead, unsigned int itemID)
 {
