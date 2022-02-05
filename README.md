@@ -8,9 +8,8 @@ Built using wxWidgets and C/C++, Valkyrie allows you to keep control of your inv
 * wxWidgets library
     - [Download](https://www.wxwidgets.org/downloads/) and [installation](https://wiki.wxwidgets.org/Install) instructions available in the project website.
 
-## Linux:
-
 ### Building the project
+#### Linux:
 1. Clone the repository
 ```
 git clone https://github.com/mariano-perez09/valkyrie
