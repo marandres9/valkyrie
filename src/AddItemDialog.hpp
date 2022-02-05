@@ -40,4 +40,4 @@ private:
 
 };
 
-#endif
+#endif // ADDITEMDIALOG_HPP

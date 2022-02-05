@@ -10,10 +10,6 @@
 #include "AddItemDialog.hpp"
 #include "ErrorBox.hpp"
 
-// extern "C" {
-// 	#include "linkedList/linkedList.h"
-// }
-
 class MainApp : public wxApp
 {
 public:
@@ -45,4 +41,4 @@ private:
 	wxDECLARE_EVENT_TABLE();
 };
 
-#endif
+#endif // APP_FRAME_HPP

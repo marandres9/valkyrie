@@ -69,4 +69,4 @@ private:
 	int sortDirection = 1;
 };
 
-#endif
+#endif // MAINLIST_HPP

@@ -20,4 +20,4 @@ private:
     wxTextCtrl *movementEntry;
 };
 
-#endif
+#endif // STOCKMOVEMENTPANEL_HPP
