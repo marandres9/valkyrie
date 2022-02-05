@@ -134,8 +134,8 @@ bool MainList::isEmpty() const {
 
 void MainList::setSelectedItemData(wxString itemID, long itemIndex)
 {
-	selectedItemID = itemID;
-	selectedItemIndex = itemIndex;
+	this->selectedItemID = itemID;
+	this->selectedItemIndex = itemIndex;
 }
 const wxString &MainList::getSelectedItemID() const
 {

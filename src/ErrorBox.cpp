@@ -15,7 +15,7 @@ void ErrorBox::callError(ERROR_CODE err) {
             msg = "Please select an item";
             break;
         case ERR_REPEATED_ID:
-            msg = "ID is already in use\nPlease use an unique ID";
+            msg = "ID is already in use\nPlease use unique ID's";
             break;
         default:
             msg = wxEmptyString;

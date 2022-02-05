@@ -1,11 +1,12 @@
+# path to wx-config
+# example: /home/user/wxWidgets-X.X.X/gtk-build/wx-config
+WX_CONFIG=${WXWIDGETS_WXCONFIG}
+
 CC=gcc
 CCPP=g++
 SRC=src
 #  linked list class (C)
 LINKEDLISTSRC=src/linkedList
-
-# path to: wx-config
-WX_CONFIG=${WXWIDGETS_WXCONFIG}
 
 CPP_SOURCES := $(wildcard $(SRC)/*.cpp)
 C_SOURCES := $(wildcard $(LINKEDLISTSRC)/*.c)

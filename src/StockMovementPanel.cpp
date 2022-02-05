@@ -40,12 +40,12 @@ int StockMovementPanel::getMovement() const
 }
 void StockMovementPanel::appendID(const wxString &id_str)
 {
-    idEntry->Clear();
-    (*idEntry) << id_str;
-    // (*idEntry) << "test";
+    this->idEntry->Clear();
+    // insert given ID argument to the idEntry
+    *(this->idEntry) << id_str;
 }
 
 void StockMovementPanel::clearMovementEntry()
 {
-    movementEntry->Clear();
+    this->movementEntry->Clear();
 }

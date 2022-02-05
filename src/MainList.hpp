@@ -59,7 +59,7 @@ private:
 	StockMovementPanel *stockMovementPanel;
 
 
-	// sorting
+	// sorting methods - defined in listSorting.cpp
 	void sortByColumn(int col);
 	static int compareValues(unsigned int u1, unsigned int u2, int uirection);
 	static int compareValues(float f1, float f2, int direction);

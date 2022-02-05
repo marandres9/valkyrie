@@ -16,7 +16,6 @@ public:
     static void callError(ERROR_CODE err);
 
 private:
-    wxString msg;
     ErrorBox();
 };
 

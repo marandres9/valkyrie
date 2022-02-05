@@ -16,6 +16,7 @@ AddItemDialog::AddItemDialog(wxWindow *parent,
     listSizer->Add(nameBox, 1, wxEXPAND);
     listSizer->Add(stockBox, 1, wxEXPAND);
     listSizer->Add(priceBox, 1, wxEXPAND);
+    // user entries
     idEntry = new wxTextCtrl(this, wxID_ANY);
     nameEntry = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
     stockEntry = new wxTextCtrl(this, wxID_ANY);

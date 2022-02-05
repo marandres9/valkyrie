@@ -1,3 +1,4 @@
+/* Sorting methods copied from Just Dev Tutorials' youtube video: https://www.youtube.com/watch?v=cwOHO-SkMpQ */
 #include "MainList.hpp"
 
 // SORTING

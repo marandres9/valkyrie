@@ -4,8 +4,7 @@ wxIMPLEMENT_APP(MainApp);
 
 bool MainApp::OnInit()
 {
-	wxWindowID mainFrameID = wxWindow::NewControlId();
-	MainFrame* frame = new MainFrame(mainFrameID, "Valkyrie", wxDefaultPosition, wxSize(800, 600));
+	MainFrame* frame = new MainFrame(wxID_ANY, "Valkyrie", wxDefaultPosition, wxSize(800, 600));
 	frame->Show();
 	return true;
 }
