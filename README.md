@@ -2,7 +2,7 @@
 Built using wxWidgets and C/C++, Valkyrie allows you to keep control of your inventory, providing a simple and un?? user interface. 
 
 ## Getting Started
----
+
 ### Prerequisites
 * Any C/C++ compiler
 * wxWidgets library
@@ -22,7 +22,7 @@ make
 ``` 
 
 ## Usage
----
+
 To be able to start, Valkyrie needs to access a file called **list.bin** located in the **saves/** folder. Said file is overwritten every time the list is saved. The application consist of a single window containing the inventory list as well as a movement panel and buttons which provide the basic functionality. The item list can also be sorted by ID, Stock and Price by clicking on any of the named column titles.
 
 ![Main window](img/main.png)
