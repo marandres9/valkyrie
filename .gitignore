@@ -1,6 +1,3 @@
 .vscode/
 *.o
-listas
-*.txt
-*.bin
-application
+valkyrie

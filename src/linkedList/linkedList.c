@@ -4,9 +4,9 @@
 
 #include "linkedList.h"
 
-#define LISTDIR_PREFIX "listas/"
-#define TXT_NAME "lista.txt"
-#define BIN_NAME "lista.bin"
+#define LISTDIR_PREFIX "saves/"
+#define TXT_NAME "list.txt"
+#define BIN_NAME "list.bin"
 
 unsigned int getID(Item* item)
 {

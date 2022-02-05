@@ -1,5 +1,5 @@
 # path to wx-config
-# example: /home/user/wxWidgets-X.X.X/gtk-build/wx-config
+# example: WX_CONFIG=/home/user/wxWidgets-X.X.X/gtk-build/wx-config
 WX_CONFIG=${WXWIDGETS_WXCONFIG}
 
 CC=gcc
@@ -19,7 +19,7 @@ CFLAGS=-Wall
 # all:
 # 	echo $(DEPS)
 
-application: $(OBJECTS)
+valkyrie: $(OBJECTS)
 	$(CCPP) $(CFLAGS) $(shell $(WX_CONFIG) --libs) $(OBJECTS) -o $@
 
 %.o: $(SRC)/%.cpp
