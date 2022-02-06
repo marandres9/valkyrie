@@ -37,7 +37,7 @@ To be able to start, Valkyrie needs to access a file called **list.bin** located
 
 ![Main window](img/main.png)
 
-To modify available stock, select an item from the list and specify the quantity as a positive or negative integer. Then, click on the *Apply movement* button.
+To modify available stock, select an item from the list (or manually type the item ID in the ID-box) and specify the quantity as a positive or negative integer. Then, click on the *Apply movement* button.
 
 ![Stock movement](img/movement.png)
 
