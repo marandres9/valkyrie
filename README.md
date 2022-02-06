@@ -1,5 +1,7 @@
 # Valkyrie - Simple stock control application
-Built using wxWidgets and C/C++, Valkyrie allows you to keep control of your inventory, providing a simple and un?? user interface. 
+Built using wxWidgets and C/C++, Valkyrie allows you to keep control of your inventory, providing a simple user interface.
+
+This project was 
 
 ## Getting Started
 
@@ -14,8 +16,17 @@ Built using wxWidgets and C/C++, Valkyrie allows you to keep control of your inv
 ```
 git clone https://github.com/mariano-perez09/valkyrie
 ```
-2. Once wxWidgets is installed, change the project Makefile variable containing the path to the **wx-config** script located in the wxWidgets build folder to your specific install location.
-3. Build the project using make
+2. Once wxWidgets is installed, change the project Makefile variable containing the path to the **wx-config** script located in the wxWidgets build folder to your specific install location, as in the following example:
+```makefile
+# path to wx-config
+WX_CONFIG=/home/user/wxWidgets-X.X.X/gtk-build/wx-config
+```
+3. If you are not using gcc and g++ as your compilers, you also need to change the **CC** and **CCPP** variables to fit your C and C++ compilers, respectively.
+```makefile
+CC=gcc
+CCPP=g++
+```
+4. Build the project using make
 ```
 make
 ``` 

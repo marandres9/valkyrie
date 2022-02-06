@@ -4,6 +4,7 @@ WX_CONFIG=${WXWIDGETS_WXCONFIG}
 
 CC=gcc
 CCPP=g++
+
 SRC=src
 #  linked list class (C)
 LINKEDLISTSRC=src/linkedList
