@@ -1,7 +1,7 @@
 # Valkyrie - Simple stock control application
 Built using wxWidgets and C/C++, Valkyrie allows you to keep control of your inventory, providing a simple user interface.
 
-This project was submitted as the final assignment for the Informatica II course at UTN Facultad Regional San Francisco.
+This project was submitted as the final assignment for the course Informatica II at UTN Facultad Regional San Francisco.
 
 ## Getting Started
 
