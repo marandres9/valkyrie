@@ -21,7 +21,7 @@ CFLAGS=-Wall
 # 	echo $(DEPS)
 
 valkyrie: $(OBJECTS)
-	$(CCPP) $(CFLAGS) $(shell $(WX_CONFIG) --libs) $(OBJECTS) -o $@
+	$(CCPP) $(CFLAGS) $(OBJECTS) $(shell $(WX_CONFIG) --libs) -o $@
 
 %.o: $(SRC)/%.cpp
 	$(CCPP) $(CPPFLAGS) $(shell $(WX_CONFIG) --cppflags) -c $< -o $@

@@ -9,6 +9,8 @@ extern "C" {
     #include "linkedList/linkedList.h"
 }
 
+typedef unsigned int uint;
+
 typedef struct ItemData
 {
 	uint id;

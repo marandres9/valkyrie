@@ -11,6 +11,8 @@ extern "C" {
 	#include "linkedList/linkedList.h"
 }
 
+typedef unsigned int uint;
+
 class MainList : public wxListView
 {
 public:
