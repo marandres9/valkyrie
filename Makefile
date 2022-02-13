@@ -17,9 +17,6 @@ OBJECTS := $(patsubst $(SRC)/%.cpp, %.o, $(CPP_SOURCES)) $(patsubst $(LINKEDLIST
 CPPFLAGS=-Wall
 CFLAGS=-Wall
 
-# all:
-# 	echo $(DEPS)
-
 valkyrie: $(OBJECTS)
 	$(CCPP) $(CFLAGS) $(OBJECTS) $(shell $(WX_CONFIG) --libs) -o $@
 
