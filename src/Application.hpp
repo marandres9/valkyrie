@@ -20,15 +20,11 @@ class MainFrame : public wxFrame
 {
 public:
 	MainFrame(wxWindowID id, const wxString& title,
-			const wxPoint& pos = wxDefaultPosition,
-			const wxSize& size = wxDefaultSize);
-
-	void setSelectedItem(wxListEvent &evt);
+				const wxPoint& pos = wxDefaultPosition,
+				const wxSize& size = wxDefaultSize);
 private:
 	// declaracion de los miembros
 	MainList *mainListView;
-	AddItemDialog *addItemDialog;	
-
 	StockMovementPanel *stockMovementPanel;
 
 	// evt handlers
@@ -37,6 +33,7 @@ private:
 	void onSaveButton(wxCommandEvent &evt);
 	void onDeleteButton(wxCommandEvent &evt);
 	void onClose(wxCloseEvent &evt);
+	void setSelectedItem(wxListEvent &evt);
 
 	wxDECLARE_EVENT_TABLE();
 };

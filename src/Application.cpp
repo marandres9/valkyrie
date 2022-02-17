@@ -12,11 +12,11 @@ bool MainApp::OnInit()
 MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size)
 	: wxFrame(nullptr, id, title, pos, size)
 {	
-	// crea la lista y la conecta al evento de click en una columna
+	// crear la lista
 	this->mainListView = new MainList(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_VRULES | wxLC_HRULES);	
-	
+	// crear panel para botones
 	wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
-
+	// crear botones
 	wxButton *addButton = new wxButton(buttonPanel, wxID_ADD);
 	wxButton *saveButton = new wxButton(buttonPanel, wxID_SAVE);
 	wxButton *deleteButton = new wxButton(buttonPanel, wxID_DELETE);
@@ -40,19 +40,19 @@ MainFrame::MainFrame(wxWindowID id, const wxString& title, const wxPoint& pos, c
 	mainSizer->Add(buttonPanel, 0, wxEXPAND);
 	
 	// se ajusta el sizer al panel principal
-
 	this->SetSizerAndFit(mainSizer);
 }
 
 void MainFrame::onAddItemButton(wxCommandEvent &evt)
 {
-	addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
+	AddItemDialog *addItemDialog = new AddItemDialog(this, wxID_ANY, wxDefaultPosition, wxSize(700, 300));
 	addItemDialog->Bind(wxEVT_BUTTON, 
-						[this](wxCommandEvent &evt) {
+						[this, &addItemDialog](wxCommandEvent &evt) {
 							// obtiene los datos ingresados en el dialogo
 							ItemData newItemData = addItemDialog->onApplyButton();
 							// agrega el item a la LL y a la listView
-							this->mainListView->addNewItem(newItemData.id, newItemData.name, newItemData.stock, newItemData.price);
+							this->mainListView->addNewItem(newItemData.id, newItemData.name,
+															newItemData.stock, newItemData.price);
 						},
 						wxID_APPLY);
 	// muestra el dialogo
@@ -65,7 +65,6 @@ void MainFrame::onApplyMovementButton(wxCommandEvent &evt)
 	// obtener los datos ingresados
 	unsigned int id = stockMovementPanel->getID();
 	int movement = stockMovementPanel->getMovement();
-
 	// si el movimiento es valido, limpia el cuadro del movimiento
 	// si no es valido la funcion registerMovement() se encarga de dar el error
 	if(this->mainListView->registerMovement(id, movement)) {
@@ -76,15 +75,17 @@ void MainFrame::onSaveButton(wxCommandEvent &evt)
 {
 	wxDialog *saveDialog = new wxDialog(this, wxID_ANY, "Save...");
 
-	wxTextCtrl *message = new wxTextCtrl(saveDialog, wxID_ANY, "Save changes?", wxDefaultPosition, wxDefaultSize, wxTE_CENTER | wxTE_READONLY);
+	wxTextCtrl *message = new wxTextCtrl(saveDialog, wxID_ANY, "Save changes?", 
+										wxDefaultPosition, wxDefaultSize,
+										wxTE_CENTER | wxTE_READONLY);
 
 	wxSizer *buttonSizer = saveDialog->CreateButtonSizer(wxCANCEL | wxYES);
 	saveDialog->Bind(wxEVT_BUTTON, 
-						[this, &saveDialog](wxCommandEvent &evt) {
-							this->mainListView->saveList();
-							saveDialog->Destroy();
-						},
-						wxID_YES);
+					[this, &saveDialog](wxCommandEvent &evt) {
+						this->mainListView->saveList();
+						saveDialog->Destroy();
+					},
+					wxID_YES);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(message, 1, wxEXPAND | wxALL, 10);

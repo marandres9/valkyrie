@@ -5,10 +5,9 @@
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
 
-extern "C" {
-    #include "linkedList/linkedList.h"
+extern "C" {  
+  #include "linkedList/linkedList.h"
 }
-
 typedef unsigned int uint;
 
 typedef struct ItemData

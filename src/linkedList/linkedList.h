@@ -47,7 +47,7 @@ void changeStock(Item* listHead, unsigned int key, unsigned int newStock);
 void changePrice(Item* listHead, unsigned int key, float newPrice);
 
 Item* getItemAndRegisterMovement(Item* listHead, unsigned int itemID, Operacion op, unsigned int cantidad);
-// funcion adaptada para la gui
+// funcion adaptada para la gui, devuelve 1 si se registro o 0 si hubo un error
 int register_movement(Item* item, int movimiento);
 
 void write_txt(Item* listHead);

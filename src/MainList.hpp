@@ -7,8 +7,8 @@
 #include "ErrorBox.hpp"
 #include "StockMovementPanel.hpp"
 
-extern "C" {
-	#include "linkedList/linkedList.h"
+extern "C" {  
+  #include "linkedList/linkedList.h"
 }
 
 typedef unsigned int uint;
@@ -25,14 +25,15 @@ public:
 
 	// list controls
 	Item* getHead() const;
-	// parses listas.bin and loads list to memory
+	// parses list.bin and loads list to memory
 	void createListFromFile();
 	// displays list items to listView
 	void populateListView();
-	// adds to LL and listView
-	void addNewItem(unsigned int newID, const char *newName, unsigned int newStock, float newPrice);
 	// adds to listView
 	void addListViewItem (Item *item);
+	// adds to LL and listView
+	void addNewItem(unsigned int newID, const char *newName,
+					unsigned int newStock, float newPrice);
 	// find_item() wrapper
 	Item* findItem(uint itemID);
 	// register_movement() wrapper
@@ -58,9 +59,6 @@ private:
 	wxString selectedItemID;
 	long selectedItemIndex = 0;
 
-	StockMovementPanel *stockMovementPanel;
-
-
 	// sorting methods - defined in listSorting.cpp
 	void sortByColumn(int col);
 	static int compareValues(unsigned int u1, unsigned int u2, int uirection);
@@ -70,5 +68,4 @@ private:
 	static int priceSortCallback(wxIntPtr item1, wxIntPtr item2, wxIntPtr direction);
 	int sortDirection = 1;
 };
-
 #endif // MAINLIST_HPP

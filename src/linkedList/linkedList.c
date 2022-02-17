@@ -45,6 +45,7 @@ void setPrice(Item* item, float newPrice)
 
 Item* find_item(Item* listHead, unsigned int itemID)
 {	
+	// in case list is empty
 	if(listHead == NULL) return NULL;
 	
 	Item* temp = listHead;
@@ -118,10 +119,6 @@ Item* insert_atHead(Item** listHead, Item* item)
 	return item;
 }
 Item* createAndSet_atHead(Item** listHead, unsigned int newID, const char* newName, unsigned int newStock, float newPrice)
-// Se toma un puntero que apunta a la cabeza de la lista (que es un puntero), ya que 
-// se necesita modificar la direccion a la que apunta la cabeza. 
-// Si el argumento fuera de tipo Item* listHead, la funcion recibiria una copia del 
-// puntero listHead, y no podria cambiar la direccion a la que apunta la cabeza real.
 {
 	Item* newItem = createItem();
 	// si la funcion setItem devuelve 0, el ID ya existe y no se agrega el item a la lista
@@ -242,8 +239,8 @@ void write_txt(Item* listHead)
 	fptr = fopen(LISTDIR_PREFIX""TXT_NAME, "w");
 	if (fptr == NULL)
 	{
-		printf("Error al abrir el archivo %s\n", LISTDIR_PREFIX""TXT_NAME);
-		printf("Asegurese de crear el directorio listas/\n");
+		printf("Couldn't open file: %s\n", LISTDIR_PREFIX""TXT_NAME);
+		printf("Make sure to create folder saves/\n");
 		fclose(fptr);
 		return;
 	}
@@ -264,8 +261,8 @@ void write_bin(Item* listHead)
 	fptr = fopen(LISTDIR_PREFIX""BIN_NAME, "wb");
 	if (fptr == NULL)
 	{
-		printf("Error al abrir el archivo %s\n", LISTDIR_PREFIX""TXT_NAME);
-		printf("Asegurese de crear el directorio listas/\n");
+		printf("Couldn't open file: %s\n", LISTDIR_PREFIX""BIN_NAME);
+		printf("Make sure to create folder saves/\n");
 		fclose(fptr);
 		return;
 	}
@@ -280,6 +277,7 @@ void write_bin(Item* listHead)
 	printf("File written succesfully: "LISTDIR_PREFIX BIN_NAME"\n");
 	fclose (fptr);
 }
+
 void readAndPrintBin()
 {
 	FILE *fptr;
